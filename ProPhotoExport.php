@@ -259,12 +259,12 @@ class Renderer
 {
 	function BlankLine()
 	{
-		print '<tr/>';
+		print '<tr style="height:10px; border:1px solid black"><td> </td></tr>';
 	}
 	
 	function LineSeparator()
 	{
-		print '<tr style="height:10px; border:2px solid red><td/> </tr>';
+		print '<tr style="height:10px; border:1px solid black"><td/></tr>';
 	}
 
 	public function RenderGaleryInfo($galery)
@@ -421,6 +421,5 @@ function sr_orders_details()
 		$renderer->RenderGaleryDetails($galery);
 		echo '<BR/>';
 	}
-	$renderer->RenderGaleryDetails($galery);
 }
 ?>
