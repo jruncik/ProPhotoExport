@@ -114,6 +114,11 @@ class Order
 		return $this->paymentStatus;
 	}
 	
+	public function GetPhotosBySize()
+	{
+		return $this->photosBySize;
+	}
+	
 	public function GetTotalPrice()
 	{
 		return $this->totalPrice;
@@ -156,6 +161,16 @@ class Photos
 	public function AddPhoto($photo, $media)
 	{
 		$this->photos[] = new Photo($this, $photo, $media);
+	}
+	
+	public function GetPhotos()
+	{
+		return $this->photos;
+	}
+	
+	public function GetCategory()
+	{
+		return $this->category;
 	}
 	
 	private $parent_order;
@@ -244,7 +259,12 @@ class Renderer
 {
 	function BlankLine()
 	{
-		print '<tr style="border: 1px solid red;height:10px"></tr>';
+		print '<tr/>';
+	}
+	
+	function LineSeparator()
+	{
+		print '<tr style="height:10px; border:2px solid red><td/> </tr>';
 	}
 
 	public function RenderGaleryInfo($galery)
@@ -256,6 +276,25 @@ class Renderer
 		foreach($galery->GetOrders() as $order)
 		{
 			$this->RenderOrderInfo($order);
+		}
+		
+		$this->RenderEnd();
+	}
+
+	public function RenderGaleryDetails($galery)
+	{
+		$this->RenderBegin();
+		$this->RenderGalery($galery);
+		$this->BlankLine();
+		
+		foreach($galery->GetOrders() as $order)
+		{
+			$this->LineSeparator();
+			$this->RenderOrderInfo($order);
+			foreach($order->GetPhotosBySize() as $photos)
+			{
+				$this->RenderPhotos($photos);
+			}
 		}
 		
 		$this->RenderEnd();
@@ -280,18 +319,51 @@ class Renderer
 	{
 		print '<tr>';
 		
-		print '<td>Nmae: ';
+		print '<td><b>Name:</b> ';
 		print $order->GetName();
 		print '</td>';
 
-		print '<td>Email: ';
+		print '<td><b>Email:</b> ';
 		print $order->GetEmail();
 		print '</td>';
 
-		print '<td>Price: ';
+		print '<td><b>Price:</b> ';
 		print $order->GetTotalPrice();
 		print '</td>';
 		
+		print '</tr>';
+	}
+
+	public function RenderPhotos($photos)
+	{
+		print '<tr>';
+		
+		print '<td><b>';
+		print $photos->GetCategory();
+		print '</b></td>';
+
+		print '</tr>';
+		
+		foreach($photos->GetPhotos() as $photo)
+		{
+			$this->RenderPhoto($photo);
+		}
+	}
+	
+	public function RenderPhoto($photo)
+	{
+		print '<tr>';
+		
+		print '<td/>';
+		
+		print '<td>Photo: ';
+		print $photo->GetName();
+		print '</td>';
+
+		print '<td>Quqntity: ';
+		print $photo->GetQuantity();
+		print 'x</td>';
+
 		print '</tr>';
 	}
 	
@@ -344,10 +416,11 @@ function sr_orders_details()
 	$ppExport = new ProPhotoExport();
 	$renderer = new Renderer();
 	
-	$galery = $ppExport->GetGalery('2089');
-	
-	print '<table style="width:60%; border: 1px solid black">';
-	$renderer->RenderGaleryInfo($galery);
-	print '</table>';
+	foreach ($ppExport->GetGaleries() as $galery)
+	{
+		$renderer->RenderGaleryDetails($galery);
+		echo '<BR/>';
+	}
+	$renderer->RenderGaleryDetails($galery);
 }
 ?>
