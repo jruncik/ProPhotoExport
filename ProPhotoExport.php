@@ -7,45 +7,6 @@ Author: Jaroslav Runcik
 Description: Better view over ProPhoto orders.
 */
 
-class Galery
-{
-	public function __construct ($galeryId)
-	{
-		$this->galeryId = $galeryId;
-		$this->orders = array();
-	}
-	
-	public function AddOrder($dbOrder, $media)
-	{
-		$orderId = $this->GenerateOrderId($dbOrder);
-		$this->orders[$orderId] = new Order($dbOrder, $media);
-	}
-	
-	public function GaleryId()
-	{
-		return $this->galeryId;
-	}
-	
-	public function GetTotalPrice()
-	{
-		$totalPrice = 0;
-		foreach ($this->orders as $order)
-		{
-			$totalPrice += $order->GetTotalPrice();
-		}
-		return $totalPrice;
-	}
-	
-	private function GenerateOrderId($dbOrder)
-	{
-		$orderId = $dbOrder->name .  '_'. $dbOrder->email;
-		return str_replace(' ', '', $orderId);
-	}
-	
-	private $galeryId;
-	private $orders;	
-}
-
 class Galeries
 {
 	public function __construct()
@@ -73,6 +34,50 @@ class Galeries
 	}
 	
 	private $galeries;
+}
+
+class Galery
+{
+	public function __construct ($galeryId)
+	{
+		$this->galeryId = $galeryId;
+		$this->orders = array();
+	}
+	
+	public function AddOrder($dbOrder, $media)
+	{
+		$orderId = $this->GenerateOrderId($dbOrder);
+		$this->orders[$orderId] = new Order($dbOrder, $media);
+	}
+	
+	public function GetGaleryId()
+	{
+		return $this->galeryId;
+	}
+	
+	public function GetOrders()
+	{
+		return $this->orders;
+	}
+	
+	public function GetTotalPrice()
+	{
+		$totalPrice = 0;
+		foreach ($this->orders as $order)
+		{
+			$totalPrice += $order->GetTotalPrice();
+		}
+		return $totalPrice;
+	}
+	
+	private function GenerateOrderId($dbOrder)
+	{
+		$orderId = $dbOrder->name .  '_'. $dbOrder->email;
+		return str_replace(' ', '', $orderId);
+	}
+	
+	private $galeryId;
+	private $orders;	
 }
 
 class Order
@@ -190,99 +195,159 @@ class Photo
 	private $quantity;
 }
 
+class ProPhotoExport
+{
+	public function __construct()
+	{
+		$this->galeries = new Galeries();
+		$this->InitialzeFromDb();
+	}
+	
+	private function InitialzeFromDb()
+	{
+		global $wpdb;
+	 
+		$mediaDb = $wpdb->get_results("SELECT * FROM wp_postmeta WHERE meta_key = '_wp_attached_file';", OBJECT );
+		$ordersDb = $wpdb->get_results("SELECT * FROM wp_options WHERE option_name LIKE 'pfp_order_%'", OBJECT );
+
+		$media = array();		
+		foreach($mediaDb as $mediumDb)
+		{
+			$media[(int)$mediumDb->post_id] = $mediumDb->meta_value;
+		}
+
+		foreach($ordersDb as $orderDb)
+		{
+			$order = json_decode($orderDb->option_value);
+			if($order->{'status'} == 'open')
+			{
+				$galery = $this->galeries->AddOrGetGalery($order->galleryID);
+				$galery->AddOrder($order, $media);
+			}
+		}
+	}
+
+	public function GetGalery($galeryId)
+	{
+		return $this->galeries->GetGalery($galeryId);
+	}
+
+	public function GetGaleries()
+	{
+		return $this->galeries->GetGaleries($galeryId);
+	}
+
+	private $galeries;
+}
+
+class Renderer
+{
+	function BlankLine()
+	{
+		print '<tr style="border: 1px solid red;height:10px"></tr>';
+	}
+
+	public function RenderGaleryInfo($galery)
+	{
+		$this->RenderBegin();
+		$this->RenderGalery($galery);
+		$this->BlankLine();
+		
+		foreach($galery->GetOrders() as $order)
+		{
+			$this->RenderOrderInfo($order);
+		}
+		
+		$this->RenderEnd();
+	}
+	
+	public function RenderGalery($galery)
+	{
+		print '<tr>';
+		
+		print '<td style=\"width:110px\"><h2>GaleryId: ';
+		print $galery->GetGaleryId();
+		print '</td></h2>';
+
+		print '<td><b>Total Price:</b> ';
+		print $galery->GetTotalPrice();
+		print '</td>';
+		
+		print '</tr>';
+	}
+	
+	public function RenderOrderInfo($order)
+	{
+		print '<tr>';
+		
+		print '<td>Nmae: ';
+		print $order->GetName();
+		print '</td>';
+
+		print '<td>Email: ';
+		print $order->GetEmail();
+		print '</td>';
+
+		print '<td>Price: ';
+		print $order->GetTotalPrice();
+		print '</td>';
+		
+		print '</tr>';
+	}
+	
+	private function PrintLine($label, $value)
+	{
+		print '<tr>';
+		print "<td style=\"width:110px\"><b>$label</b></td><td>$value</td>";
+		print '</tr>';
+	}
+	
+	public function RenderBegin()
+	{
+		print '<table style="width:70%; border: 1px solid black">';
+	}
+	
+	public function RenderEnd()
+	{
+		print '</table>';
+	}
+}
+
 add_action('admin_menu', 'my_menu');
 
 function my_menu()
 {
-    add_menu_page('ProPhoto Sorted Orders', 'ProPhoto Orders', 'export', 'my-page-slug', 'sr_sort_orders');
+    add_menu_page('ProPhoto Orders Info', 'ProPhoto Orders Info', 'export', 'sr_orders_page_slug_info', 'sr_orders_info');
+	add_menu_page('ProPhoto Orders Details', 'ProPhoto Orders Details', 'export', 'sr_orders_page_slug_details', 'sr_orders_details');
 }
 
-function sr_sort_orders()
+function sr_orders_info()
 {
-   	global $wpdb;
- 
- 	$mediaDb = $wpdb->get_results("SELECT * FROM wp_postmeta WHERE meta_key = '_wp_attached_file';", OBJECT );
- 	$ordersDb = $wpdb->get_results("SELECT * FROM wp_options WHERE option_name LIKE 'pfp_order_%'", OBJECT );
-
- 	$media = array();
+	echo '<BR/>';
+	echo '<BR/>';
 	
- 	foreach($mediaDb as $mediumDb)
- 	{
- 		$media[(int)$mediumDb->post_id] = $mediumDb->meta_value;
-    }
-
-	$galeries = new Galeries();
+	$ppExport = new ProPhotoExport();
+	$renderer = new Renderer();
 	
- 	foreach($ordersDb as $orderDb)
- 	{
- 		$order = json_decode($orderDb->option_value);
-		
-		if($order->{'status'} == 'open')
-		{
-			$galery = $galeries->AddOrGetGalery($order->galleryID);
-			$galery->AddOrder($order, $media);
-	
-			sr_print_order($order, $media);
-		}
-    }
-	
-	$galery = $galeries->GetGalery('2089');
-	echo $galery->GetTotalPrice();
+	foreach ($ppExport->GetGaleries() as $galery)
+	{
+		$renderer->RenderGaleryInfo($galery);
+		echo '<BR/>';
+	}
 }
 
-function sr_print_order($order, $media)
+function sr_orders_details()
 {
+	echo '<BR/>';
+	echo '<BR/>';
+	
+	$ppExport = new ProPhotoExport();
+	$renderer = new Renderer();
+	
+	$galery = $ppExport->GetGalery('2089');
+	
 	print '<table style="width:60%; border: 1px solid black">';
-
-	sr_print_order_line('galleryID',		$order->{'galleryID'});
-	sr_print_order_line('name',				$order->name);
-	sr_print_order_line('email',			$order->{'email'});
-	sr_print_order_line('status',			$order->{'status'});
-	sr_print_order_line('paymentStatus',	$order->{'paymentStatus'});
-
-	sr_print_photos($order->{'cart'}, $media);
-
+	$renderer->RenderGaleryInfo($galery);
 	print '</table>';
-	print '<br/>';
 }
-
-function sr_print_order_line($label, $value)
-{
-	print '<tr>';
-   	print "<td style=\"width:110px\"><b>$label</b></td><td>$value</td>";
-	print '</tr>';
-}
-
-function sr_print_photos($photos, $media)
-{
-	$totalPrice = 0;
-	foreach ($photos as $photo)
- 	{
-		$totalPrice += sr_print_photo($photo, $media);
-    }
-
-	sr_print_blank_line();
-    sr_print_order_line('totoal price:', $totalPrice);
-}
-
-function sr_print_photo($photo, $media)
-{
-	sr_print_blank_line();
-
-	sr_print_order_line('imgID',		$photo->{'imgID'});
-	sr_print_order_line('imgName',		$media[(int)($photo->{'imgID'})]);
-	sr_print_order_line('quantity',		$photo->{'quantity'});
-	sr_print_order_line('price',		$photo->{'price'});
-	sr_print_order_line('productName',	$photo->{'productName'});
-
-	return $photo->{'price'} * $photo->{'quantity'};
-}
-
-function sr_print_blank_line()
-{
-	print '<tr style="border: 1px solid red;height:10px">';
-	//print '<td>--------------------------------------------</td>';
-	print '</tr>';
-}
-
 ?>
