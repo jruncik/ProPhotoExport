@@ -376,7 +376,7 @@ class Renderer
 	
 	public function RenderBegin()
 	{
-		print '<table style="width:70%; border: 1px solid black">';
+		print '<table style="width:70%;border:1px solid;background-color:lightgrey;">';
 	}
 	
 	public function RenderEnd()
