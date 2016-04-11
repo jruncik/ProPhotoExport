@@ -14,11 +14,11 @@ class Galeries
 		$this->galeries = array();
 	}
 	
-	public function AddOrGetGalery($galeryId)
+	public function AddOrGetGalery($galeryId, $galeryName)
 	{
 		if (!array_key_exists($galeryId, $this->galeries))
 		{
-			$this->galeries[$galeryId] = new Galery($galeryId);
+			$this->galeries[$galeryId] = new Galery($galeryId, $galeryName);
 		}
 		return $this->galeries[$galeryId];
 	}
@@ -38,9 +38,10 @@ class Galeries
 
 class Galery
 {
-	public function __construct ($galeryId)
+	public function __construct ($galeryId, $name)
 	{
 		$this->galeryId = $galeryId;
+		$this->name = $name;
 		$this->orders = array();
 	}
 	
@@ -53,6 +54,11 @@ class Galery
 	public function GetGaleryId()
 	{
 		return $this->galeryId;
+	}
+	
+	public function GetName()
+	{
+		return $this->name;
 	}
 	
 	public function GetOrders()
@@ -77,7 +83,8 @@ class Galery
 	}
 	
 	private $galeryId;
-	private $orders;	
+	private $orders;
+	private $name;	
 }
 
 class Order
@@ -222,8 +229,8 @@ class ProPhotoExport
 	{
 		global $wpdb;
 	 
-		$mediaDb = $wpdb->get_results("SELECT * FROM wp_postmeta WHERE meta_key = '_wp_attached_file';", OBJECT );
-		$ordersDb = $wpdb->get_results("SELECT * FROM wp_options WHERE option_name LIKE 'pfp_order_%'", OBJECT );
+		$mediaDb = $wpdb->get_results("SELECT * FROM wp_postmeta WHERE meta_key = '_wp_attached_file';", OBJECT);
+		$ordersDb = $wpdb->get_results("SELECT * FROM wp_options WHERE option_name LIKE 'pfp_order_%'", OBJECT);
 
 		$media = array();		
 		foreach($mediaDb as $mediumDb)
@@ -236,7 +243,8 @@ class ProPhotoExport
 			$order = json_decode($orderDb->option_value);
 			if($order->{'status'} == 'open')
 			{
-				$galery = $this->galeries->AddOrGetGalery($order->galleryID);
+				$galeryName = $this->GetGaleryNameFromDb($order->galleryID);
+				$galery = $this->galeries->AddOrGetGalery($order->galleryID, $galeryName);
 				$galery->AddOrder($order, $media);
 			}
 		}
@@ -250,6 +258,14 @@ class ProPhotoExport
 	public function GetGaleries()
 	{
 		return $this->galeries->GetGaleries($galeryId);
+	}
+	
+	private function GetGaleryNameFromDb($galeryId)
+	{
+		global $wpdb;
+		$query  = 'SELECT post_title FROM wp_posts WHERE ID = ' . $galeryId;
+		$galeryName = $wpdb->get_results($query, OBJECT);
+		return $galeryName[0]->post_title;
 	}
 
 	private $galeries;
@@ -304,8 +320,8 @@ class Renderer
 	{
 		print '<tr>';
 		
-		print '<td style=\"width:110px\"><h2>GaleryId: ';
-		print $galery->GetGaleryId();
+		print '<td style=\"width:110px\"><h2>Galery: ';
+		print $galery->GetName();
 		print '</td></h2>';
 
 		print '<td><b>Total Price:</b> ';
@@ -386,6 +402,7 @@ class Renderer
 }
 
 add_action('admin_menu', 'my_menu');
+wp_enqueue_style('pfp_admin', PFP_URL . 'css/ppexport.css' );
 
 function my_menu()
 {
