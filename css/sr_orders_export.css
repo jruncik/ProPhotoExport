@@ -1,0 +1,72 @@
+.srGalery {
+   	display: table;
+   	width: 80%;
+	border: 1px solid black;
+	background-color:#EEEEEE;
+	margin: 15px;
+	padding: 10px;
+}
+
+.srTR {
+   	display: table-row;
+}
+
+.srTC {
+   	display: table-cell;
+	width: 250px;
+}
+
+.srTCCustomer {
+   	display: table-cell;
+	width: 250px;
+}
+
+.srGaleryHeader {
+	display: table-row;
+	margin-bottom: 30px;
+}
+
+.srGaleryName {
+	display: table-cell;
+	font-weight: bold;
+   	font-size: 20pt;
+}
+
+.srCustomer {
+	display: table-row;
+	font-size: 12pt;
+}
+
+.srCustomerList {
+	display: table-row;
+}
+
+.srOrder {
+	margin-top: 20px;
+	margin-left: 15px;
+	margin-bottom: 20px;
+}
+
+.srPhotosType{
+	margin: 10px;
+}
+
+.rTableRowPhotosHeader {
+   	display: table-row;
+	font-size: 16pt;
+}
+
+.srPhotos{
+	margin: 10px;
+}
+
+.srPhoto{
+   	border-bottom: 1px solid lightgray;
+	margin-left: 10px;
+}
+
+.srPhotoType {
+   	display: table-row;
+	font-weight: bold;
+	margin-left: 10px;
+}

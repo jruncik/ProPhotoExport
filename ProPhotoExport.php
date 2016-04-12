@@ -273,138 +273,144 @@ class ProPhotoExport
 
 class Renderer
 {
-	function BlankLine()
+	public function __construct()
 	{
-		print '<tr style="height:10px; border:1px solid black"><td> </td></tr>';
+		$plugin_dir_url = plugin_dir_url( __FILE__ );
+		wp_enqueue_style( 'srStyle', $plugin_dir_url . '/css/sr_orders_export.css', false, '1.1', 'all');
 	}
 	
-	function LineSeparator()
-	{
-		print '<tr style="height:10px; border:1px solid black"><td/></tr>';
-	}
-
 	public function RenderGaleryInfo($galery)
-	{
-		$this->RenderBegin();
-		$this->RenderGalery($galery);
-		$this->BlankLine();
+	{		
+		$this->RenderGaleryBegin();
+		$this->RenderGaleryHeader($galery);
 		
 		foreach($galery->GetOrders() as $order)
 		{
-			$this->RenderOrderInfo($order);
+			$this->RenderOrderBegin();
+			$this->RenderCustomerInfo($order, 'srCustomerList', 'srTCCustomer');
+			$this->RenderOrderEnd();
 		}
-		
-		$this->RenderEnd();
+		$this->RenderGaleryEnd();
 	}
 
 	public function RenderGaleryDetails($galery)
 	{
-		$this->RenderBegin();
-		$this->RenderGalery($galery);
-		$this->BlankLine();
+		$this->RenderGaleryBegin();
+		$this->RenderGaleryHeader($galery);
 		
 		foreach($galery->GetOrders() as $order)
 		{
-			$this->LineSeparator();
-			$this->RenderOrderInfo($order);
+			$this->RenderOrderBegin();
+			$this->RenderCustomerInfo($order, 'srCustomer', 'srTC');
+			
 			foreach($order->GetPhotosBySize() as $photos)
 			{
 				$this->RenderPhotos($photos);
 			}
+			$this->RenderOrderEnd();
 		}
-		
-		$this->RenderEnd();
+		$this->RenderGaleryEnd();
+	}
+
+	private function RenderGaleryBegin()
+	{
+		print '<div class="srGalery">';
+	}
+
+	private function RenderGaleryEnd()
+	{
+		print '</div>';
 	}
 	
-	public function RenderGalery($galery)
+	private function RenderGaleryHeader($galery)
 	{
-		print '<tr>';
-		
-		print '<td style=\"width:110px\"><h2>Galery: ';
-		print $galery->GetName();
-		print '</td></h2>';
+		print '<div class="srGaleryHeader">';
+			print '<div class="srTR">';
+				print '<div class="srGaleryName">';
+					print $galery->GetName();
+				print '</div>';
 
-		print '<td><b>Total Price:</b> ';
-		print $galery->GetTotalPrice();
-		print '</td>';
-		
-		print '</tr>';
+				print '<div class="srTC">';
+					print $galery->GetTotalPrice();
+					print ' Kč';
+				print '</div>';
+			print '</div>';
+		print '</div>';
 	}
 	
-	public function RenderOrderInfo($order)
+	private function RenderOrderBegin()
 	{
-		print '<tr>';
+		print '<div class="srOrder">';
+	}
+	
+	private function RenderOrderEnd()
+	{
+		print '</div>';
+	}
+	
+	private function RenderCustomerInfo($order, $styleName, $cellStyleName)
+	{
+		print '<div class="';
+		print $styleName;
+		print '">';
 		
-		print '<td><b>Name:</b> ';
-		print $order->GetName();
-		print '</td>';
-
-		print '<td><b>Email:</b> ';
-		print $order->GetEmail();
-		print '</td>';
-
-		print '<td><b>Price:</b> ';
-		print $order->GetTotalPrice();
-		print '</td>';
-		
-		print '</tr>';
+			print "<div class=\"$cellStyleName\">";
+				print $order->GetName();
+			print '</div>';
+			
+			print "<div class=\"$cellStyleName\">";
+				print $order->GetEmail();
+			print '</div>';
+			
+			print "<div class=\"$cellStyleName\">";
+				print $order->GetTotalPrice();
+				print ' Kč';
+			print '</div>';
+			
+		print '</div>';
 	}
 
-	public function RenderPhotos($photos)
+	private function RenderPhotos($photos)
 	{
-		print '<tr>';
+		print '<div class="srPhotosType">';
+			print '<div class="srPhotoType">';
+				print $photos->GetCategory();
+			print '</div>';
+			
+			print '<div class="srPhotos">';
 		
-		print '<td><b>';
-		print $photos->GetCategory();
-		print '</b></td>';
-
-		print '</tr>';
-		
-		foreach($photos->GetPhotos() as $photo)
+				foreach($photos->GetPhotos() as $photo)
+				{
+					$this->RenderPhoto($photo);
+				}
+				
+			print '</div>';
+		print '</div>';
+	}
+	
+	private function RenderPhoto($photo)
+	{
+		if ($photo->GetName() == null)
 		{
-			$this->RenderPhoto($photo);
+			return;
 		}
-	}
-	
-	public function RenderPhoto($photo)
-	{
-		print '<tr>';
 		
-		print '<td/>';
-		
-		print '<td>Photo: ';
-		print $photo->GetName();
-		print '</td>';
+		print '<div class="srPhoto">';
+			print '<div class="srTC">';
+				print $photo->GetName();
+			print '</div>';
 
-		print '<td>Quqntity: ';
-		print $photo->GetQuantity();
-		print 'x</td>';
+			print '<div class="srTC">';
+				print $photo->GetQuantity();
+			print 'x</div>';
 
-		print '</tr>';
-	}
-	
-	private function PrintLine($label, $value)
-	{
-		print '<tr>';
-		print "<td style=\"width:110px\"><b>$label</b></td><td>$value</td>";
-		print '</tr>';
-	}
-	
-	public function RenderBegin()
-	{
-		print '<table style="width:70%;border:1px solid;background-color:lightgrey;">';
-	}
-	
-	public function RenderEnd()
-	{
-		print '</table>';
+		print '</div>';
 	}
 }
 
 add_action('admin_menu', 'my_menu');
-wp_enqueue_style('pfp_admin', PFP_URL . 'css/ppexport.css' );
 
-function my_menu()
+function my_menu()	
 {
     add_menu_page('ProPhoto Orders Info', 'ProPhoto Orders Info', 'export', 'sr_orders_page_slug_info', 'sr_orders_info');
 	add_menu_page('ProPhoto Orders Details', 'ProPhoto Orders Details', 'export', 'sr_orders_page_slug_details', 'sr_orders_details');
@@ -413,7 +419,6 @@ function my_menu()
 function sr_orders_info()
 {
 	echo '<BR/>';
-	echo '<BR/>';
 	
 	$ppExport = new ProPhotoExport();
 	$renderer = new Renderer();
@@ -421,13 +426,11 @@ function sr_orders_info()
 	foreach ($ppExport->GetGaleries() as $galery)
 	{
 		$renderer->RenderGaleryInfo($galery);
-		echo '<BR/>';
 	}
 }
 
 function sr_orders_details()
 {
-	echo '<BR/>';
 	echo '<BR/>';
 	
 	$ppExport = new ProPhotoExport();
@@ -436,7 +439,6 @@ function sr_orders_details()
 	foreach ($ppExport->GetGaleries() as $galery)
 	{
 		$renderer->RenderGaleryDetails($galery);
-		echo '<BR/>';
 	}
 }
 ?>
