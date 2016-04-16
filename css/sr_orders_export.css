@@ -1,72 +1,58 @@
 .srGalery {
-   	display: table;
-   	width: 80%;
+   	width: 40%;
 	border: 1px solid black;
-	background-color:#EEEEEE;
-	margin: 15px;
+	background-color:#EEFFFF;
 	padding: 10px;
-}
-
-.srTR {
-   	display: table-row;
-}
-
-.srTC {
-   	display: table-cell;
-	width: 250px;
-}
-
-.srTCCustomer {
-   	display: table-cell;
-	width: 250px;
-}
-
-.srGaleryHeader {
-	display: table-row;
-	margin-bottom: 30px;
+	margin: 20px;
 }
 
 .srGaleryName {
-	display: table-cell;
 	font-weight: bold;
    	font-size: 20pt;
 }
 
+.srGaleryPrice {
+	font-weight: bold;
+   	font-size: 20pt;
+	float: right;
+}
+
 .srCustomer {
-	display: table-row;
-	font-size: 12pt;
+	margin-top: 30px;
+	margin-left: 10px;
+	border-bottom: 1px solid gray;
 }
 
-.srCustomerList {
-	display: table-row;
-}
-
-.srOrder {
-	margin-top: 20px;
-	margin-left: 15px;
-	margin-bottom: 20px;
-}
-
-.srPhotosType{
-	margin: 10px;
-}
-
-.rTableRowPhotosHeader {
-   	display: table-row;
+.srCustomerName {
 	font-size: 16pt;
+	font-weight: bold;
+ }
+
+.srCustomerEmail {
+	font-size: 12pt;
+	margin-left: 30%;
 }
 
-.srPhotos{
+.srCustomerPrice {
+	font-size: 12pt;
+	margin-left: 20%;
+}
+
+.srPhotoType {
+	font-weight: bold;
 	margin: 10px;
 }
 
-.srPhoto{
+.srPhotos {
+	margin: 10px;
+}
+
+.srPhoto {
    	border-bottom: 1px solid lightgray;
 	margin-left: 10px;
 }
 
-.srPhotoType {
-   	display: table-row;
-	font-weight: bold;
-	margin-left: 10px;
+.srPhotoQuantity {
+	float: right;
+	margin-right: 40%;
 }

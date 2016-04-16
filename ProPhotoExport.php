@@ -9,7 +9,9 @@ Description: Better view over ProPhoto orders.
 
 require 'Model.php';
 require 'Renderers.php';
-require 'RendererVisitors.php';
+
+require '/Renderers/SimpleRenderer.php';
+require '/Renderers/HtmlRenderer.php';
 
 class ProPhotoExport
 {
@@ -70,6 +72,9 @@ add_action('admin_menu', 'my_menu');
 
 function my_menu()	
 {
+	$plugin_dir_url = plugin_dir_url( __FILE__ );
+	wp_enqueue_style( 'srStyle', $plugin_dir_url . '/css/sr_orders_export.css', false, '1.1', 'all');
+
     add_menu_page('ProPhoto Orders Info', 'ProPhoto Orders Info', 'export', 'sr_orders_page_slug_info', 'sr_orders_info');
 	add_menu_page('ProPhoto Orders Details', 'ProPhoto Orders Details', 'export', 'sr_orders_page_slug_details', 'sr_orders_details');
 }
@@ -79,7 +84,7 @@ function sr_orders_info()
 	echo '<BR/>';
 	
 	$ppExport = new ProPhotoExport();
-	$visitor = new SimpleRenderer();
+	$visitor = new HtmlRenderer();
 	
 	$ppExport->GetGaleries()->Accept($visitor);
 }
@@ -89,7 +94,7 @@ function sr_orders_details()
 	echo '<BR/>';
 	
 	$ppExport = new ProPhotoExport();
-	$visitor = new SimpleRenderer();
+	$visitor = new HtmlRenderer();
 	
 	$ppExport->GetGaleries()->Accept($visitor);
 }
