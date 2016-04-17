@@ -1,6 +1,6 @@
 <?php
 
-class HtmlRenderer implements IExportVisitor
+class HtmlRendererList implements IExportVisitor
 {
 	public function __construct($plugin_dir_url)
 	{
@@ -23,7 +23,7 @@ class HtmlRenderer implements IExportVisitor
 		
 		print '<div class="srGaleryInfo">';
 
-		print '<span class="srGaleryName">';	
+		print '<span class="srGaleryName">';
 		print $galery->GetName();
 		print '</span>';
 
@@ -42,20 +42,16 @@ class HtmlRenderer implements IExportVisitor
 	////////////////////////////////////////////////////////////////////
 	public function VisitCustomerBegin()
 	{
-		print '<div class="srCustomer">';
+		print '<div class="srCustomerList">';
 	}
 	
 	public function VisitCustomer($order)
 	{
-		print '<span class="srCustomerName">';
+		print '<span class="srCustomerListName">';
 		print $order->GetName();
 		print '</span>';
 
-		//print '<span class="srCustomerEmail">';
-		//print $order->GetEmail();
-		//print '</span>';
-
-		print '<span class="srCustomerPrice">';
+		print '<span class="srCustomerListPrice">';
 		print $order->GetTotalPrice();
 		print ' Kč</span>';
 	}
@@ -72,43 +68,23 @@ class HtmlRenderer implements IExportVisitor
 	
 	public function VisitPhotoDescription($photoDescription)
 	{
-		print '<div class="srPhotoType">';
-		print $photoDescription->GetCategory();
-		print '</div>';
-		
-		print '<div class="srPhotos">';
 	}
 
 	public function VisitPhotoDescriptionEnd()
 	{
-		print '</div>';
 	}
 	
 	////////////////////////////////////////////////////////////////////
 	public function VisitPhotoBegin()
 	{
-		print '<div class="srPhoto">';
 	}
 	
 	public function VisitPhoto($photo)
 	{
-		if ($photo->GetName() == null)
-		{
-			return;
-		}
-
-		print '<span>';
-		print $photo->GetName();
-		print '</span>';
-
-		print '<span class="srPhotoQuantity">';
-		print $photo->GetQuantity();
-		print 'x    </span>';
 	}
 	
 	public function VisitPhotoEnd()
 	{
-		print '</div>';
 	}
 	
 	private $plugin_dir_url;

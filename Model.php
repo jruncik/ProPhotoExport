@@ -60,7 +60,12 @@ class Galery implements  IElement
 	
 	public function GetName()
 	{
-		return $this->name;
+		if ($this->name != null)
+		{
+			return $this->name;
+		}
+		
+		return 'UnknownGalery';
 	}
 	
 	public function GetOrders()

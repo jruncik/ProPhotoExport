@@ -6,6 +6,11 @@
 	margin: 20px;
 }
 
+.srGaleryInfo {
+	margin-top: 10px;
+	margin-bottom:10px;
+}
+
 .srGaleryName {
 	font-weight: bold;
    	font-size: 20pt;
@@ -34,6 +39,25 @@
 
 .srCustomerPrice {
 	font-size: 12pt;
+	margin-left: 100px;
+	float: right;
+}
+
+.srCustomer {
+}
+
+.srCustomerListName {
+	font-size: 11pt;
+	font-weight: bold;
+ }
+
+.srCustomerListEmail {
+	font-size: 11pt;
+	margin-left: 50%;
+}
+
+.srCustomerListPrice {
+	font-size: 11pt;
 	margin-left: 100px;
 	float: right;
 }
