@@ -1,7 +1,7 @@
 .srGalery {
-   	width: 40%;
+   	width: 70%;
 	border: 1px solid black;
-	background-color:#EEFFFF;
+	background-color:#EEEEFF;
 	padding: 10px;
 	margin: 20px;
 }
@@ -20,7 +20,6 @@
 .srCustomer {
 	margin-top: 30px;
 	margin-left: 10px;
-	border-bottom: 1px solid gray;
 }
 
 .srCustomerName {
@@ -30,12 +29,13 @@
 
 .srCustomerEmail {
 	font-size: 12pt;
-	margin-left: 30%;
+	margin-left: 50%;
 }
 
 .srCustomerPrice {
 	font-size: 12pt;
-	margin-left: 20%;
+	margin-left: 100px;
+	float: right;
 }
 
 .srPhotoType {
@@ -49,10 +49,10 @@
 
 .srPhoto {
    	border-bottom: 1px solid lightgray;
-	margin-left: 10px;
+	margin-left: 20px;
 }
 
 .srPhotoQuantity {
 	float: right;
-	margin-right: 40%;
+	margin-right: 60%;
 }

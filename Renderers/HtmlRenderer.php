@@ -2,6 +2,12 @@
 
 class HtmlRenderer implements IExportVisitor
 {
+	public function __construct($plugin_dir_url)
+	{
+		$this->plugin_dir_url = $plugin_dir_url;
+		wp_enqueue_style( 'srStyle', $plugin_dir_url . '/css/sr_orders_export.css', false, '1.1', 'all');
+	}
+	
 	public function VisitGaleryBegin()
 	{
 		print'<div class="srGalery">';
@@ -9,6 +15,21 @@ class HtmlRenderer implements IExportVisitor
 	
 	public function VisitGalery($galery)
 	{
+		/*
+		echo '
+			<div id="exportlinks">
+				<ul>
+					<li><a href="' . wp_nonce_url( 'tools.php?page=databasebrowser&amp;table=' . $galery->GetGaleryId() . '&amp;export=CVS', 'export' ) . '" class="button">CVS</a></li>
+					<li><a href="' . wp_nonce_url( 'tools.php?page=databasebrowser&amp;table=' . $galery->GetGaleryId() . '&amp;export=PDF', 'export' ) . '" class="button">PDF</a></li>
+				</ul>
+			</div>
+			';
+			*/
+			
+		$fileName = $galery->GetName();
+		$fileName = str_replace(' ', '_', $fileName);
+		echo '<a href="'.$this->plugin_dir_url.'/ExportData.php?filename='.$fileName.'&galeryId='.$galery->GetGaleryId().'">'.$fileName.'.cvs</a>';
+		
 		print '<div>';
 
 		print '<span class="srGaleryName">';
@@ -18,7 +39,7 @@ class HtmlRenderer implements IExportVisitor
 		print '<span class="srGaleryPrice">';
 		print $galery->GetTotalPrice();
 		print ' Kč</span>';
-
+		
 		print '</div>';
 	}
 
@@ -39,9 +60,9 @@ class HtmlRenderer implements IExportVisitor
 		print $order->GetName();
 		print '</span>';
 
-		print '<span class="srCustomerEmail">';
-		print $order->GetEmail();
-		print '</span>';
+		//print '<span class="srCustomerEmail">';
+		//print $order->GetEmail();
+		//print '</span>';
 
 		print '<span class="srCustomerPrice">';
 		print $order->GetTotalPrice();
@@ -60,9 +81,9 @@ class HtmlRenderer implements IExportVisitor
 	
 	public function VisitPhotoDescription($photoDescription)
 	{
-		print '<span class="srPhotoType">';
+		print '<div class="srPhotoType">';
 		print $photoDescription->GetCategory();
-		print '</span>';
+		print '</div>';
 		
 		print '<div class="srPhotos">';
 	}
@@ -80,18 +101,25 @@ class HtmlRenderer implements IExportVisitor
 	
 	public function VisitPhoto($photo)
 	{
+		if ($photo->GetName() == null)
+		{
+			return;
+		}
+
 		print '<span>';
 		print $photo->GetName();
 		print '</span>';
 
 		print '<span class="srPhotoQuantity">';
 		print $photo->GetQuantity();
-		print 'x</span>';
+		print 'x    </span>';
 	}
 	
 	public function VisitPhotoEnd()
 	{
 		print '</div>';
 	}
+	
+	private $plugin_dir_url;
 }
 ?>
