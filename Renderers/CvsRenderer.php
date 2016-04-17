@@ -14,7 +14,7 @@ class CvsRenderer implements IExportVisitor
 	public function VisitGalery($galery)
 	{
 		$this->cvsResult .= $galery->GetName();
-		$this->cvsResult .= ';;';
+		$this->cvsResult .= ';;;';
 		$this->cvsResult .= $galery->GetTotalPrice();
 		$this->cvsResult .= "\n";
 	}
@@ -33,7 +33,7 @@ class CvsRenderer implements IExportVisitor
 		$this->cvsResult .= $order->GetName();
 		$this->cvsResult .= ';';
 		$this->cvsResult .= $order->GetEmail();
-		$this->cvsResult .= ';';
+		$this->cvsResult .= ';;';
 		$this->cvsResult .= $order->GetTotalPrice();
 		$this->cvsResult .= "\n";
 	}
