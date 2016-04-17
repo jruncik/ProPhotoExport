@@ -1,12 +1,12 @@
 <?php
-require_once('../../../wp-load.php'); 
-require('/fpdf/fpdf.php');
+require_once('../../../../wp-load.php'); 
+require_once '../Model.php';
+require_once '../DbExport.php';
 
-require_once 'Model.php';
-require_once 'DbExport.php';
+require('../fpdf/fpdf.php');
 
-require_once 'Renderers/HtmlRenderer.php';
-require_once 'Renderers/CvsRenderer.php';
+require_once '../Renderers/HtmlRenderer.php';
+require_once '../Renderers/CvsRenderer.php';
 
 $filename = $_GET['filename'];
 $galeryId = $_GET['galeryId'];

@@ -18,8 +18,8 @@ add_action('admin_menu', 'my_menu');
 
 function my_menu()	
 {
-    add_menu_page('ProPhoto Orders Info', 'ProPhoto Orders List', 'export', 'sr_orders_page_slug_list', 'sr_orders_list');
-	add_menu_page('ProPhoto Orders Details', 'ProPhoto Orders Details', 'export', 'sr_orders_page_slug_details', 'sr_orders_details');
+    add_menu_page('Orders Info', 'Orders List', 'export', 'sr_orders_page_slug_list', 'sr_orders_list');
+	add_menu_page('Orders Details', 'Orders Details', 'export', 'sr_orders_page_slug_details', 'sr_orders_details');
 
 	$model = new DbExport();
 	$_SESSION["model"] = $model;

@@ -17,9 +17,8 @@ class HtmlRenderer implements IExportVisitor
 	{
 		$fileName = $galery->GetName();
 		$fileName = str_replace(' ', '_', $fileName);
-		echo '<a href="'.$this->plugin_dir_url.'/ExportDataCvs.php?filename='.$fileName.'&galeryId='.$galery->GetGaleryId().'">'.$fileName.'.cvs</a>  ';
-		echo '<a href="'.$this->plugin_dir_url.'/ExportDataPdf.php?filename='.$fileName.'&galeryId='.$galery->GetGaleryId().'">'.$fileName.'.pdf</a>';
-		echo '<BR/>';
+		echo '<a href="'.$this->plugin_dir_url.'Export/ExportDataCvs.php?filename='.$fileName.'&galeryId='.$galery->GetGaleryId().'">'.$fileName.'.cvs</a>  ';
+		echo '<a href="'.$this->plugin_dir_url.'Export/ExportDataPdf.php?filename='.$fileName.'&galeryId='.$galery->GetGaleryId().'">'.$fileName.'.pdf</a>';
 		
 		print '<div class="srGaleryInfo">';
 
