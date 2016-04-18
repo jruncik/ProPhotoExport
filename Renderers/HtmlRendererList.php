@@ -1,5 +1,4 @@
 <?php
-
 class HtmlRendererList implements IExportVisitor
 {
 	public function __construct($plugin_dir_url)
