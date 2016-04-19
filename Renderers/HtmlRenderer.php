@@ -50,10 +50,6 @@ class HtmlRenderer implements IExportVisitor
 		print $order->GetName();
 		print '</span>';
 
-		//print '<span class="srCustomerEmail">';
-		//print $order->GetEmail();
-		//print '</span>';
-
 		print '<span class="srCustomerPrice">';
 		print $order->GetTotalPrice();
 		print ' Kč</span>';

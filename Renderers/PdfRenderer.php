@@ -2,22 +2,13 @@
 define('FPDF_FONTPATH','../fpdf/font/');
 require_once('../fpdf/fpdf.php');
 
-class PdfRendererList extends FPDF implements IExportVisitor
+class PdfRenderer extends FPDF implements IExportVisitor
 {
 	public function VisitGaleryBegin()
 	{
 		$this->AddPage();
 		$this->kc = iconv("UTF-8", "cp1250", " Kč");
 		$this->odd  = false;
-		
-		$this->AddFont('myArial', '', '9a15afe42a425d45532d054b4b97765e_arial.php');
-		$this->AddFont('myTimes', '', 'a60a8f192cf89450c03b993d17062e48_times.php');
-		
-		$this->fontName = 'myTimes';
- 
-		$this->SetFont($this->fontName, '', 12);
-		$this->Cell(10,10, iconv("UTF-8", "CP1250", "Text s diakritikou: ěščřžýáíéĚŠČŘŽÝÁÍÉŮůÚAAA" ));
-		$this->Ln();
 	}
 	
 	public function VisitGalery($galery)
@@ -25,14 +16,12 @@ class PdfRendererList extends FPDF implements IExportVisitor
 		$this->SetFillColor(240, 240, 240);
 		$this->SetTextColor(0, 0, 0);
 		$this->SetLineWidth(0.1);
-		//$this->SetFont($this->fontName, 'B', 16);
+		$this->SetFont('Arial', 'B', 16);
 		
 		$this->Cell(140, 7, iconv("UTF-8", "WINDOWS-1250", $galery->GetName()),       'B', 0, 'L');
 		$this->Cell(30, 7, iconv("UTF-8", "cp1250", $galery->GetTotalPrice()) . $this->kc, 'B', 0, 'R');
 		$this->Ln();
 		$this->Ln();
-		
-		//$this->SetFont($this->fontName, '', 10);
 	}
 
 	public function VisitGaleryEnd()
@@ -46,8 +35,9 @@ class PdfRendererList extends FPDF implements IExportVisitor
 	
 	public function VisitCustomer($order)
 	{
-		$this->Cell(140, 7, iconv("UTF-8", "WINDOWS-1250", $order->GetName()),       	  '', 0, 'L', $this->odd);
-		$this->Cell(30, 7, iconv("UTF-8", "cp1250", $order->GetTotalPrice()) . $this->kc, '', 0, 'R', $this->odd);
+		$this->SetFont('Arial', '', 12);
+		$this->Cell(140, 7, iconv("UTF-8", "WINDOWS-1250", $order->GetName()),       	  'T', 0, 'L');
+		$this->Cell(30, 7, iconv("UTF-8", "cp1250", $order->GetTotalPrice()) . $this->kc, 'T', 0, 'R');
 		$this->Ln();
 		
 		$this->odd = !$this->odd;
@@ -64,6 +54,11 @@ class PdfRendererList extends FPDF implements IExportVisitor
 	
 	public function VisitPhotoDescription($photoDescription)
 	{
+		$this->SetFont('Arial', 'B', 10);
+		$this->Cell(5, 7, "");
+		$this->Cell(135, 7, iconv("UTF-8", "WINDOWS-1250", $photoDescription->GetCategory()));
+		$this->Ln();
+		$this->SetFont('Arial', '', 10);
 	}
 
 	public function VisitPhotoDescriptionEnd()
@@ -77,6 +72,10 @@ class PdfRendererList extends FPDF implements IExportVisitor
 	
 	public function VisitPhoto($photo)
 	{
+		$this->Cell(10, 7, "");
+		$this->Cell(110, 7, iconv("UTF-8", "WINDOWS-1250", $photo->GetName()));
+		$this->Cell(20, 7, iconv("UTF-8", "WINDOWS-1250", $photo->GetQuantity() . 'x'), '', 0, 'R');
+		$this->Ln();
 	}
 	
 	public function VisitPhotoEnd()
@@ -85,6 +84,5 @@ class PdfRendererList extends FPDF implements IExportVisitor
 	
 	private $kc;
 	private $odd;
-	private $fontName;
 }
 ?>
