@@ -41,6 +41,7 @@ class PdfRenderer extends FPDF implements IExportVisitor
 		$this->Cell(140, 7, iconv("UTF-8", "cp1250", $order->GetName()),       	  'T', 0, 'L');
 		$this->Cell(30, 7, iconv("UTF-8", "cp1250", $order->GetTotalPrice()) . $this->kc, 'T', 0, 'R');
 		$this->Ln();
+		$this->Ln();
 		
 		$this->odd = !$this->odd;
 	}

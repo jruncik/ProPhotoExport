@@ -4,7 +4,7 @@ class CvsRenderer implements IExportVisitor
 {
 	public function __construct()
 	{
-		$this->cvsResult = '';
+		$this->cvsResult = chr(0xEF) . chr(0xBB) . chr(0xBF);
 	}
 	
 	public function VisitGaleryBegin()
