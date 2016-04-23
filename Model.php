@@ -35,7 +35,12 @@ class Galeries implements IElement
 		}
 	}
 	
-	private $galeries;
+	public function GetJson()
+	{
+		return json_encode($this);
+	}
+	
+	public $galeries;
 }
 
 class Galery implements  IElement
@@ -103,8 +108,8 @@ class Galery implements  IElement
 	}
 	
 	private $galeryId;
-	private $orders;
-	private $name;	
+	public $orders;
+	public $name;	
 }
 
 class Order implements  IElement
@@ -181,12 +186,12 @@ class Order implements  IElement
 		}
 	}
 	
-	private $name;
-	private $email;
-	private $status;
-	private $paymentStatus;
-	private $photosBySize;
-	private $totalPrice;
+	public $name;
+	public $email;
+	public $status;
+	public $paymentStatus;
+	public $photosBySize;
+	public $totalPrice;
 }
 
 class Photos implements  IElement
@@ -227,8 +232,8 @@ class Photos implements  IElement
 	}
 	
 	private $parent_order;
-	private $photos;
-	private $category;
+	public $photos;
+	public $category;
 }
 
 class Photo implements  IElement
@@ -266,7 +271,7 @@ class Photo implements  IElement
 	}
 	
 	private $parent_photos;
-	private $name;
-	private $quantity;
+	public $name;
+	public $quantity;
 }
 ?>
