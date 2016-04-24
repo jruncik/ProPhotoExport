@@ -38,7 +38,7 @@ function sr_orders_details()
 	$plugin_dir_url = plugin_dir_url( __FILE__ );
 	$visitor = new HtmlRenderer($plugin_dir_url);
 	
-	echo '<a href="'.$plugin_dir_url.'Export/ExportDataJson.php">galeries.json</a>';
+	echo '<a href="'.$plugin_dir_url.'Export/ExportDataXml.php">galeries.xml</a>';
 	
 	$_SESSION["model"]->GetGaleries()->Accept($visitor);
 }

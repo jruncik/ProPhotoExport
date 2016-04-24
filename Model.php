@@ -108,8 +108,8 @@ class Galery implements  IElement
 	}
 	
 	private $galeryId;
-	public $orders;
-	public $name;	
+	private $orders;
+	private $name;	
 }
 
 class Order implements  IElement
@@ -186,12 +186,12 @@ class Order implements  IElement
 		}
 	}
 	
-	public $name;
-	public $email;
-	public $status;
-	public $paymentStatus;
-	public $photosBySize;
-	public $totalPrice;
+	private $name;
+	private $email;
+	private $status;
+	private $paymentStatus;
+	private $photosBySize;
+	private $totalPrice;
 }
 
 class Photos implements  IElement
@@ -232,8 +232,8 @@ class Photos implements  IElement
 	}
 	
 	private $parent_order;
-	public $photos;
-	public $category;
+	private $photos;
+	private $category;
 }
 
 class Photo implements  IElement
@@ -242,6 +242,7 @@ class Photo implements  IElement
 	{
 		$this->parent_photos = $parent_photos;
 		$this->quantity = $photo->quantity;	
+		$this->price = $photo->price;
 		
 		$fullName = $media[(int)($photo->imgID)];
 		$splitedNames = explode('/', $fullName);
@@ -258,9 +259,9 @@ class Photo implements  IElement
 		return $this->quantity;
 	}
 	
-	public function GetTotalPrice()
+	public function GetPrice()
 	{
-		return $this->totalPrice;
+		return $this->price;
 	}
 	
 	public function Accept($visitor)
@@ -271,7 +272,8 @@ class Photo implements  IElement
 	}
 	
 	private $parent_photos;
-	public $name;
-	public $quantity;
+	private $name;
+	private $quantity;
+	private $price;
 }
 ?>
