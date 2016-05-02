@@ -105,7 +105,7 @@ class XmlRenderer implements IExportVisitor
 	
 	private function NL()
 	{
-		$this->xmlResult .="\n";
+		// $this->xmlResult .="\n";
 	}
 	
 	private $xmlResult;

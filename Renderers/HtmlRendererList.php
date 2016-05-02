@@ -48,6 +48,10 @@ class HtmlRendererList implements IExportVisitor
 		print '<span class="srCustomerListName">';
 		print $order->GetName();
 		print '</span>';
+		
+		print '<span class="srCustomerEmail">';	
+		print $order->GetEmail();
+		print '</span>';
 
 		print '<span class="srCustomerListPrice">';
 		print $order->GetTotalPrice();

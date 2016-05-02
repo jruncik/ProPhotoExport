@@ -40,7 +40,8 @@ class PdfRendererList extends FPDF implements IExportVisitor
 	
 	public function VisitCustomer($order)
 	{
-		$this->Cell(140, 7, iconv("UTF-8", "cp1250", $order->GetName()),       	  '', 0, 'L', $this->odd);
+		$this->Cell(80, 7, iconv("UTF-8", "cp1250", $order->GetName()),       	  '', 0, 'L', $this->odd);
+		$this->Cell(60, 7, iconv("UTF-8", "cp1250", $order->GetEmail()),       	  '', 0, 'L', $this->odd);
 		$this->Cell(30, 7, iconv("UTF-8", "cp1250", $order->GetTotalPrice()) . $this->kc, '', 0, 'R', $this->odd);
 		$this->Ln();
 		

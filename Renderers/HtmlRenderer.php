@@ -25,7 +25,7 @@ class HtmlRenderer implements IExportVisitor
 		print '<span class="srGaleryName">';	
 		print $galery->GetName();
 		print '</span>';
-
+		
 		print '<span class="srGaleryPrice">';
 		print $galery->GetTotalPrice();
 		print ' Kč</span>';
@@ -48,6 +48,10 @@ class HtmlRenderer implements IExportVisitor
 	{
 		print '<span class="srCustomerName">';
 		print $order->GetName();
+		print '</span>';
+
+		print '<span class="srCustomerEmail">';	
+		print $order->GetEmail();
 		print '</span>';
 
 		print '<span class="srCustomerPrice">';

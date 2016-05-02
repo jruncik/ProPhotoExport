@@ -38,7 +38,8 @@ class PdfRenderer extends FPDF implements IExportVisitor
 	public function VisitCustomer($order)
 	{
 		$this->SetFont('calibri', '', 12);
-		$this->Cell(140, 7, iconv("UTF-8", "cp1250", $order->GetName()),       	  'T', 0, 'L');
+		$this->Cell(80, 7, iconv("UTF-8", "cp1250", $order->GetName()),       	  'T', 0, 'L');
+		$this->Cell(60, 7, iconv("UTF-8", "cp1250", $order->GetEmail()),       	  'T', 0, 'L');
 		$this->Cell(30, 7, iconv("UTF-8", "cp1250", $order->GetTotalPrice()) . $this->kc, 'T', 0, 'R');
 		$this->Ln();
 		$this->Ln();
