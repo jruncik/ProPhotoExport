@@ -70,7 +70,7 @@ class Galery implements  IElement
 			return $this->name;
 		}
 		
-		return 'UnknownGalery';
+		return 'Unknown Gallery';
 	}
 	
 	public function GetOrders()
@@ -90,7 +90,7 @@ class Galery implements  IElement
 	
 	public function Accept($visitor)
 	{
-		$visitor->VisitGaleryBegin();
+		$visitor->VisitGaleryBegin($this);
 		$visitor->VisitGalery($this);
 
 		foreach ($this->orders as $order)
@@ -98,7 +98,7 @@ class Galery implements  IElement
 			$order->Accept($visitor);
 		}
 		
-		$visitor->VisitGaleryEnd();
+		$visitor->VisitGaleryEnd($this);
 	}
 	
 	private function GenerateOrderId($dbOrder)

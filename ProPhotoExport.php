@@ -12,7 +12,7 @@ require_once 'DbExport.php';
 
 require_once 'Renderers/HtmlRenderer.php';
 require_once 'Renderers/HtmlRendererList.php';
-require_once 'Renderers/CvsRenderer.php';
+require_once 'Renderers/HtmlRendererCombo.php';
 
 add_action('admin_menu', 'my_menu');
 
@@ -30,6 +30,7 @@ function sr_orders_list()
 	$plugin_dir_url = plugin_dir_url( __FILE__ );
 	$visitor = new HtmlRendererList($plugin_dir_url);
 	
+	renderComboBox();
 	$_SESSION["model"]->GetGaleries()->Accept($visitor);
 }
 
@@ -39,7 +40,18 @@ function sr_orders_details()
 	$visitor = new HtmlRenderer($plugin_dir_url);
 	
 	echo '<a href="'.$plugin_dir_url.'Export/ExportDataXml.php">galeries.xml</a>';
-	
+	renderComboBox();
 	$_SESSION["model"]->GetGaleries()->Accept($visitor);
+}
+
+function renderComboBox()
+{
+	$visitor = new HtmlRendererCombo();
+	print '<br/><br/>';
+	print '<select>';
+	print '<option value="">All Galleries</option>';
+	$_SESSION["model"]->GetGaleries()->Accept($visitor);
+	print '</select>';
+	print '<br/>';
 }
 ?>
