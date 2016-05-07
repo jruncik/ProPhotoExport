@@ -15,7 +15,7 @@ class CvsRenderer implements IExportVisitor
 	public function VisitGaleryBegin()
 	{
 	}
-	
+
 	public function VisitGalery($galery)
 	{
 		$this->cvsResult .= $galery->GetName();
@@ -32,7 +32,7 @@ class CvsRenderer implements IExportVisitor
 	public function VisitCustomerBegin()
 	{
 	}
-	
+
 	public function VisitCustomer($order)
 	{
 		$this->cvsResult .= $order->GetName();
@@ -46,12 +46,12 @@ class CvsRenderer implements IExportVisitor
 	public function VisitCustomerEnd()
 	{
 	}
-	
+
 	////////////////////////////////////////////////////////////////////
 	public function VisitPhotoDescriptionBegin()
 	{
 	}
-	
+
 	public function VisitPhotoDescription($photoDescription)
 	{
 		$this->cvsResult .= ';';
@@ -62,12 +62,12 @@ class CvsRenderer implements IExportVisitor
 	public function VisitPhotoDescriptionEnd()
 	{
 	}
-	
+
 	////////////////////////////////////////////////////////////////////
 	public function VisitPhotoBegin()
 	{
 	}
-	
+
 	public function VisitPhoto($photo)
 	{
 		$this->cvsResult .= ';';
@@ -76,16 +76,16 @@ class CvsRenderer implements IExportVisitor
 		$this->cvsResult .= $photo->GetQuantity();
 		$this->cvsResult .= "\n";
 	}
-	
+
 	public function VisitPhotoEnd()
 	{
 	}
-	
+
 	public function GetCvsResult()
 	{
 		return $this->cvsResult;
 	}
-	
+
 	private $cvsResult;
 }
 ?>

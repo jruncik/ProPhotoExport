@@ -14,18 +14,18 @@ class PdfRenderer extends FPDF implements IExportVisitor
 		$this->AddPage();
 		$this->kc = iconv("UTF-8", "cp1250", " Kč");
 		$this->odd  = false;
-		
+
 		$this->AddFont('calibri', '', 'calibri.php');
-		$this->AddFont('calibriB', '', 'calibrib.php');		
+		$this->AddFont('calibriB', '', 'calibrib.php');
 	}
-	
+
 	public function VisitGalery($galery)
 	{
 		$this->SetFillColor(240, 240, 240);
 		$this->SetTextColor(0, 0, 0);
 		$this->SetLineWidth(0.1);
 		$this->SetFont('calibri', '', 16);
-		
+
 		$this->Cell(140, 7, iconv("UTF-8", "cp1250", $galery->GetName()),       'B', 0, 'L');
 		$this->Cell(30, 7, iconv("UTF-8", "cp1250", $galery->GetTotalPrice()) . $this->kc, 'B', 0, 'R');
 		$this->Ln();
@@ -39,7 +39,7 @@ class PdfRenderer extends FPDF implements IExportVisitor
 	public function VisitCustomerBegin()
 	{
 	}
-	
+
 	public function VisitCustomer($order)
 	{
 		$this->SetFont('calibri', '', 12);
@@ -48,19 +48,19 @@ class PdfRenderer extends FPDF implements IExportVisitor
 		$this->Cell(30, 7, iconv("UTF-8", "cp1250", $order->GetTotalPrice()) . $this->kc, 'T', 0, 'R');
 		$this->Ln();
 		$this->Ln();
-		
+
 		$this->odd = !$this->odd;
 	}
 
 	public function VisitCustomerEnd()
 	{
 	}
-	
+
 	////////////////////////////////////////////////////////////////////
 	public function VisitPhotoDescriptionBegin()
 	{
 	}
-	
+
 	public function VisitPhotoDescription($photoDescription)
 	{
 		$this->SetFont('calibriB', '', 10);
@@ -73,12 +73,12 @@ class PdfRenderer extends FPDF implements IExportVisitor
 	public function VisitPhotoDescriptionEnd()
 	{
 	}
-	
+
 	////////////////////////////////////////////////////////////////////
 	public function VisitPhotoBegin()
 	{
 	}
-	
+
 	public function VisitPhoto($photo)
 	{
 		$this->Cell(15, 7, "");
@@ -86,11 +86,11 @@ class PdfRenderer extends FPDF implements IExportVisitor
 		$this->Cell(20, 7, iconv("UTF-8", "WINDOWS-1250", $photo->GetQuantity() . 'x'), '', 0, 'R');
 		$this->Ln();
 	}
-	
+
 	public function VisitPhotoEnd()
 	{
 	}
-	
+
 	private $kc;
 	private $odd;
 }

@@ -10,7 +10,7 @@ class SimpleRenderer implements IExportVisitor
 	public function VisitGaleryBegin()
 	{
 	}
-	
+
 	public function VisitGalery($galery)
 	{
 		print $galery->GetName();
@@ -27,7 +27,7 @@ class SimpleRenderer implements IExportVisitor
 	public function VisitCustomerBegin()
 	{
 	}
-	
+
 	public function VisitCustomer($order)
 	{
 		print $order->GetName();
@@ -41,12 +41,12 @@ class SimpleRenderer implements IExportVisitor
 	public function VisitCustomerEnd()
 	{
 	}
-	
+
 	////////////////////////////////////////////////////////////////////
 	public function VisitPhotoDescriptionBegin()
 	{
 	}
-	
+
 	public function VisitPhotoDescription($photoDescription)
 	{
 		print $photoDescription->GetCategory();
@@ -56,12 +56,12 @@ class SimpleRenderer implements IExportVisitor
 	public function VisitPhotoDescriptionEnd()
 	{
 	}
-	
+
 	////////////////////////////////////////////////////////////////////
 	public function VisitPhotoBegin()
 	{
 	}
-	
+
 	public function VisitPhoto($photo)
 	{
 		print $photo->GetName();
@@ -69,7 +69,7 @@ class SimpleRenderer implements IExportVisitor
 		print $photo->GetQuantity();
 		print '<BR/>';
 	}
-	
+
 	public function VisitPhotoEnd()
 	{
 	}

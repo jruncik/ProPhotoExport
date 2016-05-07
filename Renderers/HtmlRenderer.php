@@ -17,24 +17,24 @@ class HtmlRenderer implements IExportVisitor
 	{
 		print'<div class="srGalery">';
 	}
-	
+
 	public function VisitGalery($galery)
 	{
 		$fileName = $galery->GetName();
 		$fileName = str_replace(' ', '_', $fileName);
 		echo '<a href="'.$this->plugin_dir_url.'Export/ExportDataCvs.php?filename='.$fileName.'&galeryId='.$galery->GetGaleryId().'">'.$fileName.'.cvs</a>  ';
 		echo '<a href="'.$this->plugin_dir_url.'Export/ExportDataPdf.php?filename='.$fileName.'&galeryId='.$galery->GetGaleryId().'">'.$fileName.'.pdf</a>';
-		
+
 		print '<div class="srGaleryInfo">';
 
-		print '<span class="srGaleryName">';	
+		print '<span class="srGaleryName">';
 		print $galery->GetName();
 		print '</span>';
-		
+
 		print '<span class="srGaleryPrice">';
 		print $galery->GetTotalPrice();
 		print ' Kč</span>';
-		
+
 		print '</div>';
 	}
 
@@ -48,14 +48,14 @@ class HtmlRenderer implements IExportVisitor
 	{
 		print '<div class="srCustomer">';
 	}
-	
+
 	public function VisitCustomer($order)
 	{
 		print '<span class="srCustomerName">';
 		print $order->GetName();
 		print '</span>';
 
-		print '<span class="srCustomerEmail">';	
+		print '<span class="srCustomerEmail">';
 		print $order->GetEmail();
 		print '</span>';
 
@@ -68,18 +68,18 @@ class HtmlRenderer implements IExportVisitor
 	{
 		print '</div>';
 	}
-	
+
 	////////////////////////////////////////////////////////////////////
 	public function VisitPhotoDescriptionBegin()
 	{
 	}
-	
+
 	public function VisitPhotoDescription($photoDescription)
 	{
 		print '<div class="srPhotoType">';
 		print $photoDescription->GetCategory();
 		print '</div>';
-		
+
 		print '<div class="srPhotos">';
 	}
 
@@ -87,13 +87,13 @@ class HtmlRenderer implements IExportVisitor
 	{
 		print '</div>';
 	}
-	
+
 	////////////////////////////////////////////////////////////////////
 	public function VisitPhotoBegin()
 	{
 		print '<div class="srPhoto">';
 	}
-	
+
 	public function VisitPhoto($photo)
 	{
 		if ($photo->GetName() == null)
@@ -109,12 +109,12 @@ class HtmlRenderer implements IExportVisitor
 		print $photo->GetQuantity();
 		print 'x    </span>';
 	}
-	
+
 	public function VisitPhotoEnd()
 	{
 		print '</div>';
 	}
-	
+
 	private $plugin_dir_url;
 }
 ?>

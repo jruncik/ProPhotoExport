@@ -10,11 +10,11 @@ class XmlRenderer implements IExportVisitor
 	public function VisitGaleryBegin()
 	{
 	}
-	
+
 	public function VisitGalery($galery)
 	{
 		$this->NL();
-		$this->xmlResult .= '<galery name="';	
+		$this->xmlResult .= '<galery name="';
 		$this->xmlResult .= $galery->GetName();
 		$this->xmlResult .= '" price="';
 		$this->xmlResult .= $galery->GetTotalPrice();
@@ -36,10 +36,10 @@ class XmlRenderer implements IExportVisitor
 	public function VisitCustomerBegin()
 	{
 	}
-	
+
 	public function VisitCustomer($order)
 	{
-		$this->xmlResult .= '<customer name="';	
+		$this->xmlResult .= '<customer name="';
 		$this->xmlResult .= $order->GetName();
 		$this->xmlResult .= '" price="';
 		$this->xmlResult .= $order->GetTotalPrice();
@@ -48,7 +48,7 @@ class XmlRenderer implements IExportVisitor
 		$this->xmlResult .= '">';
 		$this->NL();
 		$this->xmlResult .= '<photoTypes>';
-		$this->NL();		
+		$this->NL();
 	}
 
 	public function VisitCustomerEnd()
@@ -58,12 +58,12 @@ class XmlRenderer implements IExportVisitor
 		$this->xmlResult .= '</customer>';
 		$this->NL();
 	}
-	
+
 	////////////////////////////////////////////////////////////////////
 	public function VisitPhotoDescriptionBegin()
 	{
 	}
-	
+
 	public function VisitPhotoDescription($photoDescription)
 	{
 		$this->xmlResult .= '<type name="';
@@ -81,15 +81,15 @@ class XmlRenderer implements IExportVisitor
 		$this->xmlResult .= '</type>';
 		$this->NL();
 	}
-	
+
 	////////////////////////////////////////////////////////////////////
 	public function VisitPhotoBegin()
 	{
 	}
-	
+
 	public function VisitPhoto($photo)
 	{
-		$this->xmlResult .= '<photo name="';	
+		$this->xmlResult .= '<photo name="';
 		$this->xmlResult .= $photo->GetName();
 		$this->xmlResult .= '" quantity="';
 		$this->xmlResult .= $photo->GetQuantity();
@@ -98,21 +98,21 @@ class XmlRenderer implements IExportVisitor
 		$this->xmlResult .= '"/>';
 		$this->NL();
 	}
-	
+
 	public function VisitPhotoEnd()
 	{
 	}
-	
+
 	public function GetXmlResult()
 	{
 		return $this->xmlResult;
 	}
-	
+
 	private function NL()
 	{
 		// $this->xmlResult .="\n";
 	}
-	
+
 	private $xmlResult;
 }
 ?>

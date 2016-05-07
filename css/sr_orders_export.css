@@ -1,5 +1,5 @@
 .srGalery {
-   	width: 70%;
+	width: 70%;
 	border: 1px solid black;
 	background-color:#EEEEFF;
 	padding: 10px;
@@ -13,12 +13,12 @@
 
 .srGaleryName {
 	font-weight: bold;
-   	font-size: 20pt;
+	font-size: 20pt;
 }
 
 .srGaleryPrice {
 	font-weight: bold;
-   	font-size: 20pt;
+	font-size: 20pt;
 	float: right;
 }
 
@@ -72,7 +72,7 @@
 }
 
 .srPhoto {
-   	border-bottom: 1px solid lightgray;
+	border-bottom: 1px solid lightgray;
 	margin-left: 20px;
 }
 

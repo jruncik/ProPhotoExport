@@ -23,7 +23,7 @@ class HtmlRendererList implements IExportVisitor
 		$fileName = str_replace(' ', '_', $fileName);
 		echo '<a href="'.$this->plugin_dir_url.'Export/ExportDataListCvs.php?filename='.$fileName.'&galeryId='.$galery->GetGaleryId().'">'.$fileName.'.cvs</a>  ';
 		echo '<a href="'.$this->plugin_dir_url.'Export/ExportDataListPdf.php?filename='.$fileName.'&galeryId='.$galery->GetGaleryId().'">'.$fileName.'.pdf</a>';
-		
+
 		print '<div class="srGaleryInfo">';
 
 		print '<span class="srGaleryName">';
@@ -33,7 +33,7 @@ class HtmlRendererList implements IExportVisitor
 		print '<span class="srGaleryPrice">';
 		print $galery->GetTotalPrice();
 		print ' Kč</span>';
-		
+
 		print '</div>';
 	}
 
@@ -54,7 +54,7 @@ class HtmlRendererList implements IExportVisitor
 		print $order->GetName();
 		print '</span>';
 
-		print '<span class="srCustomerEmail">';	
+		print '<span class="srCustomerEmail">';
 		print $order->GetEmail();
 		print '</span>';
 

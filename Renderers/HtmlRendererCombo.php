@@ -9,7 +9,7 @@ class HtmlRendererCombo implements IExportVisitor
 	public function VisitGaleryBegin()
 	{
 	}
-	
+
 	public function VisitGalery($galery)
 	{
 		print '<option value="';
@@ -27,7 +27,7 @@ class HtmlRendererCombo implements IExportVisitor
 	public function VisitCustomerBegin()
 	{
 	}
-	
+
 	public function VisitCustomer($order)
 	{
 	}
@@ -35,12 +35,12 @@ class HtmlRendererCombo implements IExportVisitor
 	public function VisitCustomerEnd()
 	{
 	}
-	
+
 	////////////////////////////////////////////////////////////////////
 	public function VisitPhotoDescriptionBegin()
 	{
 	}
-	
+
 	public function VisitPhotoDescription($photoDescription)
 	{
 	}
@@ -48,20 +48,20 @@ class HtmlRendererCombo implements IExportVisitor
 	public function VisitPhotoDescriptionEnd()
 	{
 	}
-	
+
 	////////////////////////////////////////////////////////////////////
 	public function VisitPhotoBegin()
 	{
 	}
-	
+
 	public function VisitPhoto($photo)
 	{
 	}
-	
+
 	public function VisitPhotoEnd()
 	{
 	}
-	
+
 	private $plugin_dir_url;
 }
 ?>

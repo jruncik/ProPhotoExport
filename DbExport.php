@@ -6,15 +6,15 @@ class DbExport
 		$this->galeries = new Galeries();
 		$this->InitialzeFromDb();
 	}
-	
+
 	private function InitialzeFromDb()
 	{
 		global $wpdb;
-	 
+
 		$mediaDb = $wpdb->get_results("SELECT * FROM wp_postmeta WHERE meta_key = '_wp_attached_file';", OBJECT);
 		$ordersDb = $wpdb->get_results("SELECT * FROM wp_options WHERE option_name LIKE 'pfp_order_%'", OBJECT);
 
-		$media = array();		
+		$media = array();
 		foreach($mediaDb as $mediumDb)
 		{
 			$media[(int)$mediumDb->post_id] = $mediumDb->meta_value;
@@ -41,7 +41,7 @@ class DbExport
 	{
 		return $this->galeries;
 	}
-	
+
 	private function GetGaleryNameFromDb($galeryId)
 	{
 		global $wpdb;

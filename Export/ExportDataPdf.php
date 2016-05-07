@@ -1,5 +1,5 @@
 <?php
-require_once('../../../../wp-load.php'); 
+require_once('../../../../wp-load.php');
 require_once '../Model.php';
 require_once '../DbExport.php';
 
@@ -10,9 +10,9 @@ $galeryId = $_GET['galeryId'];
 
 $model = new DbExport();
 $visitor = new PdfRenderer();
-	
+
 $galery = $model->GetGaleries()->GetGalery($galeryId);
 $galery->Accept($visitor);
 
 $visitor->Output();
-?> 
+?>

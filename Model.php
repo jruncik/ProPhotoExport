@@ -127,9 +127,9 @@ class Order implements  IElement
 		$this->email = $dbOrder->email;
 		$this->status = $dbOrder->status;
 		$this->paymentStatus = $dbOrder->paymentStatus;
-		
+
 		$this->photosBySize = array();
-		
+
 		$this->FillPhotosBySize($dbOrder, $media);
 	}
 
@@ -234,7 +234,7 @@ class Photos implements  IElement
 		{
 			$photo->Accept($visitor);
 		}
-		
+
 		$visitor->VisitPhotoDescriptionEnd();
 	}
 
@@ -248,9 +248,9 @@ class Photo implements  IElement
 	public function __construct($parent_photos, $photo, $media)
 	{
 		$this->parent_photos = $parent_photos;
-		$this->quantity = $photo->quantity;	
+		$this->quantity = $photo->quantity;
 		$this->price = $photo->price;
-		
+
 		$fullName = $media[(int)($photo->imgID)];
 		$splitedNames = explode('/', $fullName);
 		$this->name = $splitedNames[count($splitedNames) - 1];
