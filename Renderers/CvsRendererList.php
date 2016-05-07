@@ -6,7 +6,12 @@ class CvsRendererList implements IExportVisitor
 	{
 		$this->cvsResult = chr(0xEF) . chr(0xBB) . chr(0xBF);
 	}
-	
+
+	public function IsGalleryVisible($galleryId)
+	{
+		return true;
+	}
+
 	public function VisitGaleryBegin()
 	{
 	}

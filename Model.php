@@ -7,26 +7,26 @@ class Galeries implements IElement
 	{
 		$this->galeries = array();
 	}
-	
-	public function AddOrGetGalery($galeryId, $galeryName)
+
+	public function AddOrGetGalery($galleryId, $galeryName)
 	{
-		if (!array_key_exists($galeryId, $this->galeries))
+		if (!array_key_exists($galleryId, $this->galeries))
 		{
-			$this->galeries[$galeryId] = new Galery($galeryId, $galeryName);
+			$this->galeries[$galleryId] = new Galery($galleryId, $galeryName);
 		}
-		return $this->galeries[$galeryId];
+		return $this->galeries[$galleryId];
 	}
-	
-	public function GetGalery($galeryId)
+
+	public function GetGalery($galleryId)
 	{
-		return $this->galeries[$galeryId];
+		return $this->galeries[$galleryId];
 	}
-	
+
 	public function GetGaleries()
 	{
 		return  $this->galeries;
 	}
-	
+
 	public function Accept($visitor)
 	{
 		foreach ($this->galeries as $galery)
@@ -34,50 +34,50 @@ class Galeries implements IElement
 			$galery->Accept($visitor);
 		}
 	}
-	
+
 	public function GetJson()
 	{
 		return json_encode($this);
 	}
-	
+
 	public $galeries;
 }
 
 class Galery implements  IElement
 {
-	public function __construct ($galeryId, $name)
+	public function __construct ($galleryId, $name)
 	{
-		$this->galeryId = $galeryId;
+		$this->galleryId = $galleryId;
 		$this->name = $name;
 		$this->orders = array();
 	}
-	
+
 	public function AddOrder($dbOrder, $media)
 	{
 		$orderId = $this->GenerateOrderId($dbOrder);
 		$this->orders[$orderId] = new Order($dbOrder, $media);
 	}
-	
+
 	public function GetGaleryId()
 	{
-		return $this->galeryId;
+		return $this->galleryId;
 	}
-	
+
 	public function GetName()
 	{
 		if ($this->name != null)
 		{
 			return $this->name;
 		}
-		
+
 		return 'Unknown Gallery';
 	}
-	
+
 	public function GetOrders()
 	{
 		return $this->orders;
 	}
-	
+
 	public function GetTotalPrice()
 	{
 		$totalPrice = 0;
@@ -87,9 +87,15 @@ class Galery implements  IElement
 		}
 		return $totalPrice;
 	}
-	
+
 	public function Accept($visitor)
 	{
+		$isVisible = $visitor->IsGalleryVisible($this->galleryId);
+
+		if (!$isVisible) {
+			return;
+		}
+
 		$visitor->VisitGaleryBegin($this);
 		$visitor->VisitGalery($this);
 
@@ -97,19 +103,20 @@ class Galery implements  IElement
 		{
 			$order->Accept($visitor);
 		}
-		
+
 		$visitor->VisitGaleryEnd($this);
 	}
-	
+
 	private function GenerateOrderId($dbOrder)
 	{
 		$orderId = $dbOrder->name .  '_'. $dbOrder->email;
 		return str_replace(' ', '', $orderId);
 	}
-	
-	private $galeryId;
+
+	private $galleryId;
 	private $orders;
-	private $name;	
+	private $name;
+	private $isVisible;
 }
 
 class Order implements  IElement
@@ -130,27 +137,27 @@ class Order implements  IElement
 	{
 		return $this->name;
 	}
-	
+
 	public function GetEmail()
 	{
 		return $this->email;
 	}
-	
+
 	public function GetStatus()
 	{
 		return $this->status;
 	}
-	
+
 	public function GetPaymentStatus()
 	{
 		return $this->paymentStatus;
 	}
-	
+
 	public function GetPhotosBySize()
 	{
 		return $this->photosBySize;
 	}
-	
+
 	public function GetTotalPrice()
 	{
 		return $this->totalPrice;
@@ -160,15 +167,15 @@ class Order implements  IElement
 	{
 		$visitor->VisitCustomerBegin();
 		$visitor->VisitCustomer($this);
-		
+
 		foreach ($this->photosBySize as $photos)
 		{
 			$photos->Accept($visitor);
 		}
-		
+
 		$visitor->VisitCustomerEnd();
 	}
-	
+
 	private function FillPhotosBySize($dbOrder, $media)
 	{
 		$this->totalPrice = 0;
@@ -176,16 +183,16 @@ class Order implements  IElement
 		foreach ($dbOrder->cart as $photo)
 		{
 			$this->totalPrice += $photo->price * $photo->quantity;
-			
+
 			if (!array_key_exists($photo->productName, $this->photosBySize))
 			{
 				$this->photosBySize[$photo->productName] = new Photos($this, $photo->productName);
 			}
-			
+
 			$this->photosBySize[$photo->productName]->AddPhoto($photo, $media);
 		}
 	}
-	
+
 	private $name;
 	private $email;
 	private $status;
@@ -202,17 +209,17 @@ class Photos implements  IElement
 		$this->category = $category;
 		$this->photos = array();
 	}
-	
+
 	public function AddPhoto($photo, $media)
 	{
 		$this->photos[] = new Photo($this, $photo, $media);
 	}
-	
+
 	public function GetPhotos()
 	{
 		return $this->photos;
 	}
-	
+
 	public function GetCategory()
 	{
 		return $this->category;
@@ -222,7 +229,7 @@ class Photos implements  IElement
 	{
 		$visitor->VisitPhotoDescriptionBegin();
 		$visitor->VisitPhotoDescription($this);
-		
+
 		foreach ($this->photos as $photo)
 		{
 			$photo->Accept($visitor);
@@ -230,7 +237,7 @@ class Photos implements  IElement
 		
 		$visitor->VisitPhotoDescriptionEnd();
 	}
-	
+
 	private $parent_order;
 	private $photos;
 	private $category;
@@ -248,29 +255,29 @@ class Photo implements  IElement
 		$splitedNames = explode('/', $fullName);
 		$this->name = $splitedNames[count($splitedNames) - 1];
 	}
-	
+
 	public function GetName()
 	{
 		return $this->name;
 	}
-	
+
 	public function GetQuantity()
 	{
 		return $this->quantity;
 	}
-	
+
 	public function GetPrice()
 	{
 		return $this->price;
 	}
-	
+
 	public function Accept($visitor)
 	{
 		$visitor->VisitPhotoBegin();
 		$visitor->VisitPhoto($this);
 		$visitor->VisitPhotoEnd();
 	}
-	
+
 	private $parent_photos;
 	private $name;
 	private $quantity;

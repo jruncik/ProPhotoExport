@@ -6,12 +6,17 @@ class HtmlRendererList implements IExportVisitor
 		$this->plugin_dir_url = $plugin_dir_url;
 		wp_enqueue_style( 'srStyle', $plugin_dir_url . '/css/sr_orders_export.css', false, '1.1', 'all');
 	}
-	
+
+	public function IsGalleryVisible($galleryId)
+	{
+		return true;
+	}
+
 	public function VisitGaleryBegin()
 	{
 		print'<div class="srGalery">';
 	}
-	
+
 	public function VisitGalery($galery)
 	{
 		$fileName = $galery->GetName();
@@ -42,13 +47,13 @@ class HtmlRendererList implements IExportVisitor
 	{
 		print '<div class="srCustomerList">';
 	}
-	
+
 	public function VisitCustomer($order)
 	{
 		print '<span class="srCustomerListName">';
 		print $order->GetName();
 		print '</span>';
-		
+
 		print '<span class="srCustomerEmail">';	
 		print $order->GetEmail();
 		print '</span>';
@@ -62,12 +67,12 @@ class HtmlRendererList implements IExportVisitor
 	{
 		print '</div>';
 	}
-	
+
 	////////////////////////////////////////////////////////////////////
 	public function VisitPhotoDescriptionBegin()
 	{
 	}
-	
+
 	public function VisitPhotoDescription($photoDescription)
 	{
 	}
@@ -75,20 +80,20 @@ class HtmlRendererList implements IExportVisitor
 	public function VisitPhotoDescriptionEnd()
 	{
 	}
-	
+
 	////////////////////////////////////////////////////////////////////
 	public function VisitPhotoBegin()
 	{
 	}
-	
+
 	public function VisitPhoto($photo)
 	{
 	}
-	
+
 	public function VisitPhotoEnd()
 	{
 	}
-	
+
 	private $plugin_dir_url;
 }
 ?>

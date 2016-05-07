@@ -2,6 +2,11 @@
 
 class SimpleRenderer implements IExportVisitor
 {
+		public function IsGalleryVisible($galleryId)
+	{
+		return true;
+	}
+
 	public function VisitGaleryBegin()
 	{
 	}

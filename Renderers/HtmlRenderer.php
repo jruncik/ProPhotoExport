@@ -7,7 +7,12 @@ class HtmlRenderer implements IExportVisitor
 		$this->plugin_dir_url = $plugin_dir_url;
 		wp_enqueue_style( 'srStyle', $plugin_dir_url . '/css/sr_orders_export.css', false, '1.1', 'all');
 	}
-	
+
+	public function IsGalleryVisible($galleryId)
+	{
+		return true;
+	}
+
 	public function VisitGaleryBegin()
 	{
 		print'<div class="srGalery">';

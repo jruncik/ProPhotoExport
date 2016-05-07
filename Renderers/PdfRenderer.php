@@ -4,6 +4,11 @@ require_once('../fpdf/fpdf.php');
 
 class PdfRenderer extends FPDF implements IExportVisitor
 {
+	public function IsGalleryVisible($galleryId)
+	{
+		return true;
+	}
+
 	public function VisitGaleryBegin()
 	{
 		$this->AddPage();
