@@ -27,31 +27,69 @@ function my_menu()
 
 function sr_orders_list()
 {
+	enqueueAdminJs();
+
 	$plugin_dir_url = plugin_dir_url( __FILE__ );
 	$visitor = new HtmlRendererList($plugin_dir_url);
 
-	renderComboBox();
+	ownerDivBegin($plugin_dir_url);
 	$_SESSION["model"]->GetGaleries()->Accept($visitor);
+	ownerDivEnd();
 }
 
 function sr_orders_details()
 {
+	enqueueAdminJs();
+
 	$plugin_dir_url = plugin_dir_url( __FILE__ );
 	$visitor = new HtmlRenderer($plugin_dir_url);
 
-	echo '<a href="'.$plugin_dir_url.'Export/ExportDataXml.php">galeries.xml</a>';
-	renderComboBox();
+	ownerDivBegin($plugin_dir_url);
 	$_SESSION["model"]->GetGaleries()->Accept($visitor);
+	ownerDivEnd();
 }
 
 function renderComboBox()
 {
 	$visitor = new HtmlRendererCombo();
-	print '<br/><br/>';
-	print '<select>';
-	print '<option value="">All Galleries</option>';
+
+	print '<br/>';
+	print '<br/>';
+
+	print '<select id="comboGalleries" onchange="change(this)">';
+	print '<option value="-1">All Galleries</option>';
 	$_SESSION["model"]->GetGaleries()->Accept($visitor);
 	print '</select>';
+
 	print '<br/>';
 }
+
+function enqueueAdminJs()
+{
+	$handle = 'ProPhotoExport.js';
+	$src = plugins_url( 'ProPhotoExport.js', __FILE__ );
+	$deps = array();
+	$ver = '0.1';
+
+	wp_enqueue_script($handle, $src, $deps, $ver, true );
+}
+
+function ownerDivBegin($plugin_dir_url)
+{
+	print '<br/>';
+	echo '<a href="' . $plugin_dir_url . 'Export/ExportDataXml.php">galeries.xml</a>';
+	renderComboBox();
+
+	print "\n";
+	print '<div id="ProPhotoExport">';
+	print "\n";
+}
+
+function ownerDivEnd()
+{
+	print "\n";
+	print '</div>';
+	print "\n";
+}
+
 ?>

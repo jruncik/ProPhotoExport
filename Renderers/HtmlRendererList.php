@@ -14,11 +14,14 @@ class HtmlRendererList implements IExportVisitor
 
 	public function VisitGaleryBegin()
 	{
-		print'<div class="srGalery">';
 	}
 
 	public function VisitGalery($galery)
 	{
+		print'<div class="srGalery" id="';
+		print $galery->GetGaleryId();
+		print '">';
+
 		$fileName = $galery->GetName();
 		$fileName = str_replace(' ', '_', $fileName);
 		echo '<a href="'.$this->plugin_dir_url.'Export/ExportDataListCvs.php?filename='.$fileName.'&galeryId='.$galery->GetGaleryId().'">'.$fileName.'.cvs</a>  ';
