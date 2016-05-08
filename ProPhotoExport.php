@@ -81,8 +81,21 @@ function ownerDivBegin($plugin_dir_url)
 	renderComboBox();
 
 	print "\n";
+
+	printTotalPrice();
+
 	print '<div id="ProPhotoExport">';
 	print "\n";
+}
+
+function printTotalPrice()
+{
+	print '<div class="srGalery">';
+	print '<span class="srGaleryName">Total  price:</span>';
+	print '<span class="srGaleryPrice">';
+	print $_SESSION["model"]->GetGaleries()->GetTotalPrice();
+	print ' Kč</span>';
+	print '</div>';
 }
 
 function ownerDivEnd()

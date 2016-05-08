@@ -5,31 +5,31 @@ class Galeries implements IElement
 {
 	public function __construct()
 	{
-		$this->galeries = array();
+		$this->galleries = array();
 	}
 
 	public function AddOrGetGalery($galleryId, $galeryName)
 	{
-		if (!array_key_exists($galleryId, $this->galeries))
+		if (!array_key_exists($galleryId, $this->galleries))
 		{
-			$this->galeries[$galleryId] = new Galery($galleryId, $galeryName);
+			$this->galleries[$galleryId] = new Galery($galleryId, $galeryName);
 		}
-		return $this->galeries[$galleryId];
+		return $this->galleries[$galleryId];
 	}
 
 	public function GetGalery($galleryId)
 	{
-		return $this->galeries[$galleryId];
+		return $this->galleries[$galleryId];
 	}
 
 	public function GetGaleries()
 	{
-		return  $this->galeries;
+		return  $this->galleries;
 	}
 
 	public function Accept($visitor)
 	{
-		foreach ($this->galeries as $galery)
+		foreach ($this->galleries as $galery)
 		{
 			$galery->Accept($visitor);
 		}
@@ -40,7 +40,17 @@ class Galeries implements IElement
 		return json_encode($this);
 	}
 
-	public $galeries;
+	public function GetTotalPrice()
+	{
+		$totalPrice = 0;
+		foreach ($this->galleries as $gallery)
+		{
+			$totalPrice += $gallery->GetTotalPrice();
+		}
+		return $totalPrice;
+	}
+
+	public $galleries;
 }
 
 class Galery implements  IElement
