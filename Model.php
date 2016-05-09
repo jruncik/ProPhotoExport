@@ -62,10 +62,20 @@ class Galery implements  IElement
 		$this->orders = array();
 	}
 
-	public function AddOrder($dbOrder, $media)
+	public function AddOrGetOrder($dbOrder, $media)
 	{
 		$orderId = $this->GenerateOrderId($dbOrder);
-		$this->orders[$orderId] = new Order($dbOrder, $media);
+
+		if (!array_key_exists($orderId, $this->orders))
+		{
+			$this->orders[$orderId] = new Order($dbOrder, $media);
+		}
+		else
+		{
+			$this->orders[$orderId]->SetOrderOverrideDetected();
+		}
+
+		return $this->orders[$orderId];
 	}
 
 	public function GetGaleryId()
@@ -119,7 +129,7 @@ class Galery implements  IElement
 
 	private function GenerateOrderId($dbOrder)
 	{
-		$orderId = $dbOrder->name .  '_'. $dbOrder->email;
+		$orderId = $this->galleryId . $dbOrder->name .  '_'. $dbOrder->email;
 		return str_replace(' ', '', $orderId);
 	}
 
@@ -137,6 +147,7 @@ class Order implements  IElement
 		$this->email = $dbOrder->email;
 		$this->status = $dbOrder->status;
 		$this->paymentStatus = $dbOrder->paymentStatus;
+		$this->orderOverrideDetected = false;
 
 		$this->photosBySize = array();
 
@@ -186,6 +197,16 @@ class Order implements  IElement
 		$visitor->VisitCustomerEnd();
 	}
 
+	public function SetOrderOverrideDetected()
+	{
+		$this->orderOverrideDetected = true;
+	}
+
+	public function IsOrderOverrideDetected()
+	{
+		return $this->orderOverrideDetected;
+	}
+
 	private function FillPhotosBySize($dbOrder, $media)
 	{
 		$this->totalPrice = 0;
@@ -209,6 +230,7 @@ class Order implements  IElement
 	private $paymentStatus;
 	private $photosBySize;
 	private $totalPrice;
+	private $orderOverrideDetected;
 }
 
 class Photos implements  IElement

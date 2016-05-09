@@ -31,6 +31,12 @@
 	font-size: 16pt;
 	font-weight: bold;
  }
+ 
+ .srCustomerNameMisingDataDetected {
+	font-size: 16pt;
+	font-weight: bold;
+	color: red;
+ }
 
 .srCustomerEmail {
 	font-size: 11pt;

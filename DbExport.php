@@ -27,7 +27,7 @@ class DbExport
 			{
 				$galeryName = $this->GetGaleryNameFromDb($order->galleryID);
 				$galery = $this->galeries->AddOrGetGalery($order->galleryID, $galeryName);
-				$galery->AddOrder($order, $media);
+				$galery->AddOrGetOrder($order, $media);
 			}
 		}
 	}
