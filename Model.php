@@ -72,7 +72,7 @@ class Galery implements  IElement
 		}
 		else
 		{
-			$this->orders[$orderId]->SetOrderOverrideDetected();
+			$this->orders[$orderId]->AddOrder($dbOrder, $media);
 		}
 
 		return $this->orders[$orderId];
@@ -153,6 +153,12 @@ class Order implements  IElement
 
 		$this->FillPhotosBySize($dbOrder, $media);
 	}
+	
+	public function AddOrder($dbOrder, $media)
+	{
+		$this->orderOverrideDetected = true;
+		$this->FillPhotosBySize($dbOrder, $media);
+	}
 
 	public function GetName()
 	{
@@ -195,11 +201,6 @@ class Order implements  IElement
 		}
 
 		$visitor->VisitCustomerEnd();
-	}
-
-	public function SetOrderOverrideDetected()
-	{
-		$this->orderOverrideDetected = true;
 	}
 
 	public function IsOrderOverrideDetected()
