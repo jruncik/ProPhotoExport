@@ -50,7 +50,7 @@ class HtmlRendererCombo implements IExportVisitor
 	}
 
 	////////////////////////////////////////////////////////////////////
-	public function VisitPhotoBegin()
+	public function VisitPhotoBegin($photo)
 	{
 	}
 

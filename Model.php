@@ -244,7 +244,16 @@ class Photos implements  IElement
 
 	public function AddPhoto($photo, $media)
 	{
-		$this->photos[] = new Photo($this, $photo, $media);
+		$photoId = $photo->imgID;
+
+		if (!array_key_exists($photoId, $this->photos))
+		{
+			$this->photos[$photoId] = new Photo($this, $photo, $media);
+		}
+		else
+		{
+			$this->photos[$photoId]->AddQuantity($photo->quantity);
+		}
 	}
 
 	public function GetPhotos()
@@ -282,10 +291,22 @@ class Photo implements  IElement
 		$this->parent_photos = $parent_photos;
 		$this->quantity = $photo->quantity;
 		$this->price = $photo->price;
+		$this->quantityAdded = false;
 
 		$fullName = $media[(int)($photo->imgID)];
 		$splitedNames = explode('/', $fullName);
 		$this->name = $splitedNames[count($splitedNames) - 1];
+	}
+
+	public function AddQuantity($addQuantity)
+	{
+		$this->quantity += $addQuantity;
+		$this->quantityAdded = true;
+	}
+
+	public function IsQuantityAdded()
+	{
+		return $this->quantityAdded;
 	}
 
 	public function GetName()
@@ -305,7 +326,7 @@ class Photo implements  IElement
 
 	public function Accept($visitor)
 	{
-		$visitor->VisitPhotoBegin();
+		$visitor->VisitPhotoBegin($this);
 		$visitor->VisitPhoto($this);
 		$visitor->VisitPhotoEnd();
 	}
@@ -314,5 +335,6 @@ class Photo implements  IElement
 	private $name;
 	private $quantity;
 	private $price;
+	private $quantityAdded;
 }
 ?>

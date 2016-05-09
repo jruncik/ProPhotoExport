@@ -16,7 +16,7 @@ interface IExportVisitor
 	public function VisitPhotoDescription($photoDescription);
 	public function VisitPhotoDescriptionEnd();
 
-	public function VisitPhotoBegin();
+	public function VisitPhotoBegin($photo);
 	public function VisitPhoto($photo);
 	public function VisitPhotoEnd();
 }

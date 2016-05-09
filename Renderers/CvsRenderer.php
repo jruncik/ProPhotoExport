@@ -64,7 +64,7 @@ class CvsRenderer implements IExportVisitor
 	}
 
 	////////////////////////////////////////////////////////////////////
-	public function VisitPhotoBegin()
+	public function VisitPhotoBegin($photo)
 	{
 	}
 

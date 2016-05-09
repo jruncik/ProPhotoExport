@@ -60,7 +60,7 @@ class HtmlRenderer implements IExportVisitor
 		}
 		else
 		{
-			print '<span class="srCustomerListName">';
+			print '<span class="srCustomerName">';
 		}
 		print $order->GetName();
 		print '</span>';
@@ -99,9 +99,16 @@ class HtmlRenderer implements IExportVisitor
 	}
 
 	////////////////////////////////////////////////////////////////////
-	public function VisitPhotoBegin()
+	public function VisitPhotoBegin($photo)
 	{
-		print '<div class="srPhoto">';
+		if ($photo->IsQuantityAdded())
+		{
+			print '<div class="srPhotoQuantityAdded">';
+		}
+		else
+		{
+			print '<div class="srPhoto">';
+		}
 	}
 
 	public function VisitPhoto($photo)

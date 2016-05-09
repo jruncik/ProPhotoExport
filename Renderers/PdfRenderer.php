@@ -75,7 +75,7 @@ class PdfRenderer extends FPDF implements IExportVisitor
 	}
 
 	////////////////////////////////////////////////////////////////////
-	public function VisitPhotoBegin()
+	public function VisitPhotoBegin($photo)
 	{
 	}
 

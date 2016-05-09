@@ -31,11 +31,11 @@
 	font-size: 16pt;
 	font-weight: bold;
  }
- 
+
  .srCustomerNameMisingDataDetected {
 	font-size: 16pt;
 	font-weight: bold;
-	color: red;
+	color:#FF0000;
  }
 
 .srCustomerEmail {
@@ -55,7 +55,13 @@
 .srCustomerListName {
 	font-size: 11pt;
 	font-weight: bold;
- }
+}
+
+.srCustomerListNameMisingDataDetected {
+	font-size: 11pt;
+	font-weight: bold;
+	color:#FF0000;
+}
 
 .srCustomerListEmail {
 	font-size: 11pt;
@@ -80,6 +86,12 @@
 .srPhoto {
 	border-bottom: 1px solid lightgray;
 	margin-left: 20px;
+}
+
+.srPhotoQuantityAdded {
+	border-bottom: 1px solid lightgray;
+	margin-left: 20px;
+	color:#FF0000;
 }
 
 .srPhotoQuantity {

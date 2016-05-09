@@ -43,7 +43,7 @@ class SimpleRenderer implements IExportVisitor
 	}
 
 	////////////////////////////////////////////////////////////////////
-	public function VisitPhotoDescriptionBegin()
+	public function VisitPhotoDescriptionBegin($photo)
 	{
 	}
 

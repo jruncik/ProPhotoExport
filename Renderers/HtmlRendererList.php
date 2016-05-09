@@ -55,7 +55,7 @@ class HtmlRendererList implements IExportVisitor
 	{
 		if ($order->IsOrderOverrideDetected())
 		{
-			print '<span class="srCustomerNameMisingDataDetected">';
+			print '<span class="srCustomerListNameMisingDataDetected">';
 		}
 		else
 		{
@@ -92,7 +92,7 @@ class HtmlRendererList implements IExportVisitor
 	}
 
 	////////////////////////////////////////////////////////////////////
-	public function VisitPhotoBegin()
+	public function VisitPhotoBegin($photo)
 	{
 	}
 
