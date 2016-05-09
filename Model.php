@@ -143,6 +143,8 @@ class Order implements  IElement
 {
 	public function __construct($dbOrder, $media)
 	{
+		$this->totalPrice = 0;
+
 		$this->name = $dbOrder->name;
 		$this->email = $dbOrder->email;
 		$this->status = $dbOrder->status;
@@ -153,7 +155,7 @@ class Order implements  IElement
 
 		$this->FillPhotosBySize($dbOrder, $media);
 	}
-	
+
 	public function AddOrder($dbOrder, $media)
 	{
 		$this->orderOverrideDetected = true;
@@ -210,8 +212,6 @@ class Order implements  IElement
 
 	private function FillPhotosBySize($dbOrder, $media)
 	{
-		$this->totalPrice = 0;
-
 		foreach ($dbOrder->cart as $photo)
 		{
 			$this->totalPrice += $photo->price * $photo->quantity;
