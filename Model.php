@@ -129,7 +129,7 @@ class Galery implements  IElement
 
 	private function GenerateOrderId($dbOrder)
 	{
-		$orderId = $this->galleryId . $dbOrder->name .  '_'. $dbOrder->email;
+		$orderId = $this->galleryId . $dbOrder->GetFirstName() .  '_'. $dbOrder->GetEmail();
 		return str_replace(' ', '', $orderId);
 	}
 
@@ -145,8 +145,8 @@ class Order implements  IElement
 	{
 		$this->totalPrice = 0;
 
-		$this->name = $dbOrder->name;
-		$this->email = $dbOrder->email;
+		$this->name = $dbOrder->GetLastName() . ' ' . $dbOrder->GetFirstName();
+		$this->email = $dbOrder->GetEmail;
 		$this->status = $dbOrder->status;
 		$this->paymentStatus = $dbOrder->paymentStatus;
 		$this->orderOverrideDetected = false;
@@ -212,6 +212,7 @@ class Order implements  IElement
 
 	private function FillPhotosBySize($dbOrder, $media)
 	{
+	/*
 		foreach ($dbOrder->cart as $photo)
 		{
 			$this->totalPrice += $photo->price * $photo->quantity;
@@ -223,6 +224,7 @@ class Order implements  IElement
 
 			$this->photosBySize[$photo->productName]->AddPhoto($photo, $media);
 		}
+		*/
 	}
 
 	private $name;
