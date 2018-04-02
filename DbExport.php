@@ -11,9 +11,6 @@ class DbExport
 		$this->InitialzeFromDbNew();
 	}
 
-	// Vycist informaceogaleriich
-	// user a knemu pakobjednavku
-	
 	private function InitialzeFromDbNew()
 	{
 		$attachedFiles = $this->ReadAtachedFilesInfo();
@@ -96,7 +93,6 @@ class DbExport
 		$query  = 'SELECT post_title FROM lugo_posts WHERE ID = ' . $galeryId;
 		$galeryName = $wpdb->get_results($query, OBJECT);
 		
-		print_r($galeryId);
 		return $galeryName[0]->post_title;
 	}
 

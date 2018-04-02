@@ -54,14 +54,8 @@ class HtmlRenderer implements IExportVisitor
 
 	public function VisitCustomer($order)
 	{
-		if ($order->IsOrderOverrideDetected())
-		{
-			print '<span class="srCustomerNameMisingDataDetected">';
-		}
-		else
-		{
-			print '<span class="srCustomerName">';
-		}
+		print '<span class="srCustomerName">';
+
 		print $order->GetName();
 		print '</span>';
 

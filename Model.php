@@ -143,54 +143,32 @@ class Order implements  IElement
 {
 	public function __construct($dbOrder, $media)
 	{
-		$this->totalPrice = 0;
+		$this->photosBySize	= array();
+		$this->totalPrice 	= 0;
 
-		$this->name = $dbOrder->GetName();
-		$this->email = $dbOrder->GetEmail;
-		$this->status = $dbOrder->status;
-		$this->paymentStatus = $dbOrder->paymentStatus;
-		$this->orderOverrideDetected = false;
+		$this->name 			= $dbOrder->GetName();
+		$this->email 			= $dbOrder->GetEmail() . ' - ' . $dbOrder->GetPhone();
+		$this->status 			= $dbOrder->status;
+		$this->paymentStatus 	= $dbOrder->paymentStatus;
+		
 
-		$this->photosBySize = array();
-
-		$this->FillPhotosBySize($dbOrder, $media);
+		$this->AddOrder($dbOrder, $media);
 	}
 
 	public function AddOrder($dbOrder, $media)
 	{
-		$this->orderOverrideDetected = true;
-		$this->FillPhotosBySize($dbOrder, $media);
+		foreach ($dbOrder->GetOrderItems() as $orderItem)
+		{
+			$this->FillPhotosBySize($orderItem, $media);
+		}	
 	}
 
-	public function GetName()
-	{
-		return $this->name;
-	}
-
-	public function GetEmail()
-	{
-		return $this->email;
-	}
-
-	public function GetStatus()
-	{
-		return $this->status;
-	}
-
-	public function GetPaymentStatus()
-	{
-		return $this->paymentStatus;
-	}
-
-	public function GetPhotosBySize()
-	{
-		return $this->photosBySize;
-	}
-
-	public function GetTotalPrice()
-	{
-		return $this->totalPrice;
-	}
+	public function GetName()			{ return $this->name; }
+	public function GetEmail()			{ return $this->email; }
+	public function GetStatus()			{ return $this->status; }
+	public function GetPaymentStatus()	{ return $this->paymentStatus; }
+	public function GetPhotosBySize()	{ return $this->photosBySize; }
+	public function GetTotalPrice()		{ return $this->totalPrice; }
 
 	public function Accept($visitor)
 	{
@@ -205,26 +183,16 @@ class Order implements  IElement
 		$visitor->VisitCustomerEnd();
 	}
 
-	public function IsOrderOverrideDetected()
+	private function FillPhotosBySize($orderItem, $media)
 	{
-		return $this->orderOverrideDetected;
-	}
-
-	private function FillPhotosBySize($dbOrder, $media)
-	{
-	/*
-		foreach ($dbOrder->cart as $photo)
+		$this->totalPrice += $orderItem->GetPrice() * $orderItem->GetQty();		
+		$photoSize = $orderItem->GetProductName();
+		if (!array_key_exists($photoSize, $this->photosBySize))
 		{
-			$this->totalPrice += $photo->price * $photo->quantity;
-
-			if (!array_key_exists($photo->productName, $this->photosBySize))
-			{
-				$this->photosBySize[$photo->productName] = new Photos($this, $photo->productName);
-			}
-
-			$this->photosBySize[$photo->productName]->AddPhoto($photo, $media);
+			$this->photosBySize[$photoSize] = new Photos($this, $photoSize);
 		}
-		*/
+
+		$this->photosBySize[$photoSize]->AddPhoto($orderItem, $media);
 	}
 
 	private $name;
@@ -233,7 +201,6 @@ class Order implements  IElement
 	private $paymentStatus;
 	private $photosBySize;
 	private $totalPrice;
-	private $orderOverrideDetected;
 }
 
 class Photos implements  IElement
@@ -247,7 +214,7 @@ class Photos implements  IElement
 
 	public function AddPhoto($photo, $media)
 	{
-		$photoId = $photo->imgID;
+		$photoId = $photo->GetImageId();
 
 		if (!array_key_exists($photoId, $this->photos))
 		{
@@ -291,14 +258,11 @@ class Photo implements  IElement
 {
 	public function __construct($parent_photos, $photo, $media)
 	{
-		$this->parent_photos = $parent_photos;
-		$this->quantity = $photo->quantity;
-		$this->price = $photo->price;
-		$this->quantityAdded = false;
-
-		$fullName = $media[(int)($photo->imgID)];
-		$splitedNames = explode('/', $fullName);
-		$this->name = $splitedNames[count($splitedNames) - 1];
+		$this->parent_photos 	= $parent_photos;
+		$this->quantity 		= $photo->GetQty();
+		$this->price 			= $photo->GetPrice();
+		$this->quantityAdded 	= false;
+		$this->name 			= $photo->GetImageName();
 	}
 
 	public function AddQuantity($addQuantity)

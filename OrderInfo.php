@@ -12,7 +12,8 @@ class OrderInfo
 		$this->address	= $orderDataDb['address'];
 		$this->city 	= $orderDataDb['city'];
 		$this->zip 		= $orderDataDb['zip'];
-	    $this->email 	= $orderDataDb['email'];
+	    $this->phone 	= $orderDataDb['phone'];
+		$this->email 	= $orderDataDb['email'];
 	}
 	
 	public function AddOrder($orderItemsDb)
