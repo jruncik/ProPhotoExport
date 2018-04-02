@@ -129,7 +129,7 @@ class Galery implements  IElement
 
 	private function GenerateOrderId($dbOrder)
 	{
-		$orderId = $this->galleryId . $dbOrder->GetFirstName() .  '_'. $dbOrder->GetEmail();
+		$orderId = $this->galleryId . $dbOrder->GetName() .  '_'. $dbOrder->GetEmail();
 		return str_replace(' ', '', $orderId);
 	}
 
@@ -145,7 +145,7 @@ class Order implements  IElement
 	{
 		$this->totalPrice = 0;
 
-		$this->name = $dbOrder->GetLastName() . ' ' . $dbOrder->GetFirstName();
+		$this->name = $dbOrder->GetName();
 		$this->email = $dbOrder->GetEmail;
 		$this->status = $dbOrder->status;
 		$this->paymentStatus = $dbOrder->paymentStatus;

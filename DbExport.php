@@ -19,13 +19,12 @@ class DbExport
 		$attachedFiles = $this->ReadAtachedFilesInfo();
 		$orders = $this->ReadOrdersInfo();
 
-		$galId = (int)0;
-		
 		foreach($orders as $order)
 		{
-			// $galeryName = $this->GetGaleryNameFromDb($order->galleryID);
+			$galId 		= $order->GetGalleryId();
+			$galeryName	= $this->GetGaleryNameFromDb($galId);
 			
-			$galery = $this->galeries->AddOrGetGalery($galId, "Pokus");
+			$galery = $this->galeries->AddOrGetGalery($galId, $galeryName);
 			$galery->AddOrGetOrder($order, $attachedFiles);
 			$galId = $galId + 1;
 		}
@@ -74,37 +73,12 @@ class DbExport
 		foreach($orderItemsDb as $orderItemDb)
 		{
 			$postId = (int)$orderItemDb->post_id;
-			$orders[$postId]->AddOrder($orderItemDb);
+			$orderItemMeta = get_post_meta($postId, '_sunshine_order_items', false);
+			$orders[$postId]->AddOrder($orderItemMeta);
 		}
 		
 		return $orders;
 	}
-	
-	private function InitialzeFromDb()
-	{
-		global $wpdb;
-
-		$mediaDb = $wpdb->get_results("SELECT * FROM wp_postmeta WHERE meta_key = '_wp_attached_file';", OBJECT);
-		$ordersDb = $wpdb->get_results("SELECT * FROM wp_options WHERE option_name LIKE 'pfp_order_%'", OBJECT);
-
-		$media = array();
-		foreach($mediaDb as $mediumDb)
-		{
-			$media[(int)$mediumDb->post_id] = $mediumDb->meta_value;
-		}
-
-		foreach($ordersDb as $orderDb)
-		{
-			$order = json_decode($orderDb->option_value);
-			if($order->{'status'} == 'open')
-			{
-				$galeryName = $this->GetGaleryNameFromDb($order->galleryID);
-				$galery = $this->galeries->AddOrGetGalery($order->galleryID, $galeryName);
-				$galery->AddOrGetOrder($order, $media);
-			}
-		}
-	}
-
 	public function GetGalery($galeryId)
 	{
 		return $this->galeries->GetGalery($galeryId);
@@ -118,8 +92,11 @@ class DbExport
 	private function GetGaleryNameFromDb($galeryId)
 	{
 		global $wpdb;
-		$query  = 'SELECT post_title FROM wp_posts WHERE ID = ' . $galeryId;
+
+		$query  = 'SELECT post_title FROM lugo_posts WHERE ID = ' . $galeryId;
 		$galeryName = $wpdb->get_results($query, OBJECT);
+		
+		print_r($galeryId);
 		return $galeryName[0]->post_title;
 	}
 
